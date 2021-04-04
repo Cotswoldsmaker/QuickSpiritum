@@ -2,7 +2,7 @@
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 
 #include %A_ScriptDir%\Library\Private variables.ahk
-; test line
+
 MasterQSPath := MasterDirectory . "Quick Spiritum.ahk"
 DevDirectory := MasterDirectory . "Dev\QuickSpiritum\"
 DevQSPath := DevDirectory . "Quick Spiritum.ahk"
