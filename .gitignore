@@ -6,10 +6,10 @@ QS backups/
 Requests/
 Signatures/
 Templates/
-#install.ini
-GIP clicks.xlsx
-QIP_log.txt
-QuickSpiritum.ahk
+install.ini
+QIP clicks.xlsx
+QSLog.txt
+Quick Spiritum.ahk
 settings.ini
 Update Master File.ahk
 

@@ -1,0 +1,212 @@
+Quick Spiritum QIP Log
+Mark Bailey (mark.bailey)
+01/04/21 - 23:19, Manually, Sunrise startup, MRN4130900, , 0.422 seconds
+01/04/21 - 23:21, Manually, Sunrise startup, MRN4130900, dasd, 43.547 seconds
+01/04/21 - 23:21, Manually, Sunrise opened, MRN1111111, asDA, 2.031 seconds
+01/04/21 - 23:22, Manually, Sunrise opened, MRN1111111, asdasD, 1.875 seconds
+01/04/21 - 23:22, Manually, Trakcare startup, MRN1234567, 24/01/1982, 41.234 seconds
+01/04/21 - 23:23, Manually, Trakcare opened, MRN1112223, 11/2/1999, 9.594 seconds
+01/04/21 - 23:23, Manually, InfoFlex startup, MRN7645433, 34/5/90, 47.125 seconds
+01/04/21 - 23:24, Manually, InfoFlex opened, MRN1234565, 54/8/99, 12.360 seconds
+01/04/21 - 23:24, Manually, PACS startup, MRN0987654, ?, 24.703 seconds
+01/04/21 - 23:24, Manually, PACS opened, MRN1532543, ?, 2.234 seconds
+01/04/21 - 23:25, Manually, PAS startup, MRN8649764, 3.5, 48.937 seconds
+01/04/21 - 23:27, Manually, PAS opened, MRN1354324, , 0.609 seconds
+01/04/21 - 23:27, Manually, Lung function test, MRN1232123, 34/6/23, 20.968 seconds
+01/04/21 - 23:29, Manually, Sunrise startup, MRN4130900, , 0.438 seconds
+01/04/21 - 23:29, Manually, Sunrise opened, MRN1111111, , 0.437 seconds
+01/04/21 - 23:29, Manually, Trakcare startup, MRN1234567, , 0.203 seconds
+01/04/21 - 23:29, Manually, Trakcare opened, MRN1112223, , 0.422 seconds
+01/04/21 - 23:29, Manually, InfoFlex startup, MRN7645433, , 0.343 seconds
+01/04/21 - 23:29, Manually, InfoFlex opened, MRN1234565, , 0.313 seconds
+01/04/21 - 23:29, Manually, PACS startup, MRN0987654, , 0.375 seconds
+01/04/21 - 23:29, Manually, PACS opened, MRN1532543, , 0.422 seconds
+01/04/21 - 23:29, Manually, PAS startup, MRN8649764, , 0.453 seconds
+01/04/21 - 23:29, Manually, PAS opened, MRN1354324, , 0.422 seconds
+01/04/21 - 23:29, Manually, Lung function test, MRN1232123, , 0.469 seconds
+01/04/21 - 23:29, Automated, Sunrise startup, MRN1122332, , 0.953 seconds
+01/04/21 - 23:29, Automated, Sunrise opened, MRN5544332, , 1.359 seconds
+01/04/21 - 23:29, Automated, Trakcare startup, MRN4130900, 15/10/2020, 18.265 seconds
+01/04/21 - 23:30, Automated, Trakcare opened, MRN4130900, 15/10/2020, 13.828 seconds
+01/04/21 - 23:31, Automated, InfoFlex startup, MRN4130900, 11/03/2021, 55.094 seconds
+01/04/21 - 23:31, Automated, InfoFlex opened, MRN4130900, 11/3/21, 13.859 seconds
+01/04/21 - 23:32, Automated, PACS startup, MRN4130900, none, 25.859 seconds
+01/04/21 - 23:32, Automated, PACS opened, MRN4130900, none, 11.141 seconds
+01/04/21 - 23:33, Automated, PAS startup, MRN4130900, sdf, 25.954 seconds
+01/04/21 - 23:33, Automated, PAS opened, MRN4130900, asdf, 2.469 seconds
+01/04/21 - 23:34, Automated, Lung function test, MRN, , 4.031 seconds
+01/04/21 - 23:34, 1, Manually, Sunrise startup, MRN4130900, , 0.453 seconds
+01/04/21 - 23:34, 2, Manually, Sunrise opened, MRN1111111, , 0.390 seconds
+01/04/21 - 23:35, 3, Manually, Trakcare startup, MRN1234567, , 0.312 seconds
+01/04/21 - 23:35, 4, Manually, Trakcare opened, MRN1112223, , 0.218 seconds
+01/04/21 - 23:35, 4, Manually, Trakcare opened, MRN1112223, , 0.313 seconds
+01/04/21 - 23:35, 4, Manually, Trakcare opened, MRN1112223, , 0.266 seconds
+01/04/21 - 23:36,1,Manually,Sunrise startup,MRN4130900,,0.468 seconds
+01/04/21 - 23:36,2,Manually,Sunrise opened,MRN1111111,,0.312 seconds
+01/04/21 - 23:36,3,Manually,Trakcare startup,MRN1234567,,0.437 seconds
+02/04/21 - 20:56,1,Manually,Sunrise startup,MRN4130900,,1.781 seconds
+02/04/21 - 20:56,1,Manually,Sunrise startup,MRN4130900,,0.547 seconds
+02/04/21 - 20:56,2,Manually,Sunrise opened,MRN1111111,,1.531 seconds
+02/04/21 - 20:57,3,Manually,Trakcare startup,MRN1234567,,0.500 seconds
+02/04/21 - 20:57,4,Manually,Trakcare opened,MRN1112223,,0.828 seconds
+02/04/21 - 20:57,5,Manually,InfoFlex startup,MRN7645433,,0.781 seconds
+02/04/21 - 20:58,1,Manually,Sunrise startup,MRN4130900,,0.312 seconds
+02/04/21 - 20:58,2,Manually,Sunrise opened,MRN1111111,,0.344 seconds
+02/04/21 - 20:58,3,Manually,Trakcare startup,MRN1234567,,0.359 seconds
+02/04/21 - 20:58,4,Manually,Trakcare opened,MRN1112223,,0.328 seconds
+02/04/21 - 20:58,5,Manually,InfoFlex startup,MRN7645433,,0.437 seconds
+02/04/21 - 20:59,1,Manually,Sunrise startup,MRN4130900,,0.140 seconds
+02/04/21 - 20:59,2,Manually,Sunrise opened,MRN1111111,,0.141 seconds
+02/04/21 - 20:59,3,Manually,Trakcare startup,MRN1234567,,0.579 seconds
+02/04/21 - 20:59,4,Manually,Trakcare opened,MRN1112223,,0.859 seconds
+02/04/21 - 20:59,5,Manually,InfoFlex startup,MRN7645433,,2.578 seconds
+02/04/21 - 21:00,1,Manually,Sunrise startup,MRN4130900,,0.516 seconds
+02/04/21 - 21:00,2,Manually,Sunrise opened,MRN1111111,,0.422 seconds
+02/04/21 - 21:00,3,Manually,Trakcare startup,MRN1234567,,0.406 seconds
+02/04/21 - 21:00,4,Manually,Trakcare opened,MRN1112223,,0.422 seconds
+02/04/21 - 21:00,5,Manually,InfoFlex startup,MRN7645433,,0.390 seconds
+02/04/21 - 21:00,6,Manually,InfoFlex opened,MRN1234565,,0.484 seconds
+02/04/21 - 21:00,7,Manually,PACS startup,MRN0987654,,0.672 seconds
+02/04/21 - 21:00,8,Manually,PACS opened,MRN1532543,,0.391 seconds
+02/04/21 - 21:00,9,Manually,PAS startup,MRN8649764,,0.375 seconds
+02/04/21 - 21:00,10,Manually,PAS opened,MRN1354324,,0.516 seconds
+02/04/21 - 21:01,11,Manually,Lung function test,MRN1232123 John Smith,,0.344 seconds
+02/04/21 - 21:01,12,Manually,ICE startup,MRN1122332,,0.344 seconds
+02/04/21 - 21:01,13,Manually,ICE opened,MRN5544332,,0.453 seconds
+02/04/21 - 21:02,1,Manually,Sunrise startup,MRN4130900,,0.360 seconds
+02/04/21 - 21:02,2,Manually,Sunrise opened,MRN1111111,,0.328 seconds
+02/04/21 - 21:02,3,Manually,Trakcare startup,MRN1234567,,0.531 seconds
+02/04/21 - 21:02,4,Manually,Trakcare opened,MRN1112223,,0.578 seconds
+02/04/21 - 21:02,5,Manually,InfoFlex startup,MRN7645433,,0.468 seconds
+02/04/21 - 21:02,6,Manually,InfoFlex opened,MRN1234565,,0.375 seconds
+02/04/21 - 21:02,7,Manually,PACS startup,MRN0987654,,0.391 seconds
+02/04/21 - 21:02,8,Manually,PACS opened,MRN1532543,,0.516 seconds
+02/04/21 - 21:02,9,Manually,PAS startup,MRN8649764,,0.407 seconds
+02/04/21 - 21:04,1,Manually,Sunrise startup,MRN4130900,,0.391 seconds
+02/04/21 - 21:04,2,Manually,Sunrise opened,MRN1111111,,0.391 seconds
+02/04/21 - 21:04,3,Manually,Trakcare startup,MRN1234567,,0.391 seconds
+02/04/21 - 21:04,4,Manually,Trakcare opened,MRN1112223,,0.406 seconds
+02/04/21 - 21:04,5,Manually,InfoFlex startup,MRN7645433,,0.391 seconds
+02/04/21 - 21:04,6,Manually,InfoFlex opened,MRN1234565,,0.375 seconds
+02/04/21 - 21:04,7,Manually,PACS startup,MRN0987654,,0.406 seconds
+02/04/21 - 21:04,8,Manually,PACS opened,MRN1532543,,0.391 seconds
+02/04/21 - 21:04,9,Manually,PAS startup,MRN8649764,,0.391 seconds
+02/04/21 - 21:04,10,Manually,PAS opened,MRN1354324,,1.157 seconds
+02/04/21 - 21:04,1,Manually,Sunrise startup,MRN4130900,,0.438 seconds
+02/04/21 - 21:04,2,Manually,Sunrise opened,MRN1111111,,0.516 seconds
+02/04/21 - 21:04,3,Manually,Trakcare startup,MRN1234567,,3.468 seconds
+02/04/21 - 21:04,4,Manually,Trakcare opened,MRN1112223,,0.546 seconds
+02/04/21 - 21:04,5,Manually,InfoFlex startup,MRN7645433,,0.563 seconds
+02/04/21 - 21:05,6,Manually,InfoFlex opened,MRN1234565,,10.141 seconds
+02/04/21 - 21:05,7,Manually,PACS startup,MRN0987654,,0.375 seconds
+02/04/21 - 21:05,8,Manually,PACS opened,MRN1532543,,0.422 seconds
+02/04/21 - 21:05,9,Manually,PAS startup,MRN8649764,,3.485 seconds
+02/04/21 - 21:05,11,Manually,Sunrise startup,MRN4130900,,0.359 seconds
+02/04/21 - 21:05,12,Manually,Sunrise opened,MRN1111111,,2.547 seconds
+02/04/21 - 21:06,1,Manually,Sunrise startup,MRN4130900,,0.485 seconds
+02/04/21 - 21:06,2,Manually,Sunrise opened,MRN1111111,,0.375 seconds
+02/04/21 - 21:06,1,Manually,Sunrise startup,MRN4130900,,0.359 seconds
+02/04/21 - 21:06,2,Manually,Sunrise opened,MRN1111111,,0.328 seconds
+02/04/21 - 21:07,3,Manually,Trakcare startup,MRN1234567,,0.359 seconds
+02/04/21 - 21:07,4,Manually,Trakcare opened,MRN1112223,,0.344 seconds
+02/04/21 - 21:07,5,Manually,InfoFlex startup,MRN7645433,,0.421 seconds
+02/04/21 - 21:07,6,Manually,InfoFlex opened,MRN1234565,,0.344 seconds
+02/04/21 - 21:07,7,Manually,PACS startup,MRN0987654,,0.360 seconds
+02/04/21 - 21:07,8,Manually,PACS opened,MRN1532543,,0.359 seconds
+02/04/21 - 21:07,9,Manually,PAS startup,MRN8649764,,0.359 seconds
+02/04/21 - 21:07,10,Manually,PAS opened,MRN1354324,,0.360 seconds
+02/04/21 - 21:07,11,Manually,Lung function test,MRN1232123 John Smith,,0.594 seconds
+02/04/21 - 21:12,1,Manually,Sunrise startup,MRN4130900,,0.500 seconds
+02/04/21 - 21:12,2,Manually,Sunrise opened,MRN1111111,,0.547 seconds
+02/04/21 - 21:13,3,Manually,Trakcare startup,MRN1234567,,2.625 seconds
+02/04/21 - 21:13,4,Manually,Trakcare opened,MRN1112223,,0.532 seconds
+02/04/21 - 21:13,5,Manually,InfoFlex startup,MRN7645433,,0.485 seconds
+02/04/21 - 21:13,6,Manually,InfoFlex opened,MRN1234565,,0.468 seconds
+02/04/21 - 21:13,7,Manually,PACS startup,MRN0987654,,0.485 seconds
+02/04/21 - 21:13,8,Manually,PACS opened,MRN1532543,,0.422 seconds
+02/04/21 - 21:13,9,Manually,PAS startup,MRN8649764,,0.469 seconds
+02/04/21 - 21:13,10,Manually,PAS opened,MRN1354324,,1.156 seconds
+02/04/21 - 21:13,11,Manually,Lung function test,MRN1232123 John Smith,,0.594 seconds
+02/04/21 - 21:13,12,Manually,ICE startup,MRN1122332,,0.469 seconds
+02/04/21 - 21:13,13,Manually,ICE opened,MRN5544332,,0.485 seconds
+02/04/21 - 21:14,14,Automated,Sunrise startup,MRN4130900,,0.500 seconds
+02/04/21 - 21:14,15,Automated,Sunrise opened,MRN4130900,,0.531 seconds
+02/04/21 - 21:14,16,Automated,Trakcare startup,MRN4130900,,0.391 seconds
+02/04/21 - 21:14,17,Automated,Trakcare opened,MRN4130900,,0.422 seconds
+02/04/21 - 21:15,18,Automated,InfoFlex startup,MRN4130900,,0.484 seconds
+02/04/21 - 21:15,19,Automated,InfoFlex opened,MRN4130900,,0.422 seconds
+02/04/21 - 21:15,20,Automated,PACS startup,MRN4130900,,0.422 seconds
+02/04/21 - 21:15,21,Automated,PACS opened,MRN4130900,,0.344 seconds
+02/04/21 - 21:15,22,Automated,PAS startup,MRN4130900,,0.484 seconds
+02/04/21 - 21:15,23,Automated,PAS opened,MRN4130900,,0.469 seconds
+02/04/21 - 21:15,24,Automated,Lung function test,MRN4130900 Mark Bailey,,0.468 seconds
+02/04/21 - 21:15,25,Automated,ICE startup,MRN4130900,,0.610 seconds
+02/04/21 - 21:16,26,Automated,ICE opened,MRN4130900,,0.657 seconds
+02/04/21 - 21:17,1,Manually,Sunrise startup,MRN4130900,,0.390 seconds
+02/04/21 - 21:17,2,Manually,Sunrise opened,MRN1111111,,0.359 seconds
+02/04/21 - 21:17,3,Manually,Trakcare startup,MRN1234567,,0.391 seconds
+02/04/21 - 21:17,4,Manually,Trakcare opened,MRN1112223,,0.406 seconds
+02/04/21 - 21:17,5,Manually,InfoFlex startup,MRN7645433,,0.390 seconds
+02/04/21 - 21:17,6,Manually,InfoFlex opened,MRN1234565,,0.391 seconds
+02/04/21 - 21:17,7,Manually,PACS startup,MRN0987654,,0.453 seconds
+02/04/21 - 21:17,8,Manually,PACS opened,MRN1532543,,0.406 seconds
+02/04/21 - 21:17,9,Manually,PAS startup,MRN8649764,,0.421 seconds
+02/04/21 - 21:17,10,Manually,PAS opened,MRN1354324,,0.391 seconds
+02/04/21 - 21:17,11,Manually,Lung function test,MRN1232123 John Smith,,0.422 seconds
+02/04/21 - 21:17,12,Manually,ICE startup,MRN1122332,,0.422 seconds
+02/04/21 - 21:17,13,Manually,ICE opened,MRN5544332,,0.407 seconds
+02/04/21 - 21:17,14,Automated,Sunrise startup,MRN4130900,,0.390 seconds
+02/04/21 - 21:17,15,Automated,Sunrise opened,MRN4130900,,0.406 seconds
+02/04/21 - 21:17,16,Automated,Trakcare startup,MRN4130900,,0.437 seconds
+02/04/21 - 21:17,17,Automated,Trakcare opened,MRN4130900,,0.406 seconds
+02/04/21 - 21:17,18,Automated,InfoFlex startup,MRN4130900,,0.407 seconds
+02/04/21 - 21:17,19,Automated,InfoFlex opened,MRN4130900,,0.407 seconds
+02/04/21 - 21:18,20,Automated,PACS startup,MRN4130900,,0.438 seconds
+02/04/21 - 21:18,21,Automated,PACS opened,MRN4130900,,0.359 seconds
+02/04/21 - 21:18,22,Automated,PAS startup,MRN4130900,,0.422 seconds
+02/04/21 - 21:18,23,Automated,PAS opened,MRN4130900,,0.438 seconds
+02/04/21 - 21:18,24,Automated,Lung function test,MRN4130900 Mark Bailey,,0.391 seconds
+02/04/21 - 21:18,25,Automated,ICE startup,MRN4130900,,0.406 seconds
+02/04/21 - 21:20,1,Manually,Sunrise startup,MRN4130900,,0.781 seconds
+02/04/21 - 21:21,1,Manually,Sunrise startup,MRN4130900,,1.031 seconds
+02/04/21 - 21:21,2,Manually,Sunrise opened,MRN1111111,,0.515 seconds
+02/04/21 - 21:21,3,Manually,Trakcare startup,MRN1234567,,0.516 seconds
+02/04/21 - 21:21,4,Manually,Trakcare opened,MRN1112223,,0.453 seconds
+02/04/21 - 21:21,5,Manually,InfoFlex startup,MRN7645433,,0.531 seconds
+02/04/21 - 21:21,6,Manually,InfoFlex opened,MRN1234565,,0.485 seconds
+02/04/21 - 21:21,7,Manually,PACS startup,MRN0987654,,0.500 seconds
+02/04/21 - 21:21,8,Manually,PACS opened,MRN1532543,,0.469 seconds
+02/04/21 - 21:22,9,Manually,PAS startup,MRN8649764,,0.500 seconds
+02/04/21 - 21:22,10,Manually,PAS opened,MRN1354324,,0.516 seconds
+02/04/21 - 21:22,11,Manually,Lung function test,MRN1232123 John Smith,,0.484 seconds
+02/04/21 - 21:22,12,Manually,ICE startup,MRN1122332,,0.500 seconds
+02/04/21 - 21:22,13,Manually,ICE opened,MRN5544332,,0.485 seconds
+02/04/21 - 21:23,1,Manually,Sunrise startup,MRN4130900,,0.688 seconds
+02/04/21 - 21:23,2,Manually,Sunrise opened,MRN1111111,,0.438 seconds
+02/04/21 - 21:23,3,Manually,Trakcare startup,MRN1234567,,0.453 seconds
+02/04/21 - 21:23,4,Manually,Trakcare opened,MRN1112223,,0.375 seconds
+02/04/21 - 21:23,5,Manually,InfoFlex startup,MRN7645433,,0.422 seconds
+02/04/21 - 21:23,6,Manually,InfoFlex opened,MRN1234565,,0.437 seconds
+02/04/21 - 21:23,7,Manually,PACS startup,MRN0987654,,0.453 seconds
+02/04/21 - 21:23,8,Manually,PACS opened,MRN1532543,,0.469 seconds
+02/04/21 - 21:23,9,Manually,PAS startup,MRN8649764,,0.468 seconds
+02/04/21 - 21:23,10,Manually,PAS opened,MRN1354324,,0.469 seconds
+02/04/21 - 21:23,11,Manually,Lung function test,MRN1232123 John Smith,,0.484 seconds
+02/04/21 - 21:23,12,Manually,ICE startup,MRN1122332,,0.469 seconds
+02/04/21 - 21:23,13,Manually,ICE opened,MRN5544332,,0.453 seconds
+02/04/21 - 21:23,14,Automated,Sunrise startup,MRN4130900,,0.422 seconds
+02/04/21 - 21:23,15,Automated,Sunrise opened,MRN4130900,,0.453 seconds
+02/04/21 - 21:23,16,Automated,Trakcare startup,MRN4130900,,0.437 seconds
+02/04/21 - 21:23,17,Automated,Trakcare opened,MRN4130900,,0.563 seconds
+02/04/21 - 21:23,18,Automated,InfoFlex startup,MRN4130900,,0.469 seconds
+02/04/21 - 21:23,19,Automated,InfoFlex opened,MRN4130900,,0.563 seconds
+02/04/21 - 21:23,20,Automated,PACS startup,MRN4130900,,0.500 seconds
+02/04/21 - 21:23,21,Automated,PACS opened,MRN4130900,,0.437 seconds
+02/04/21 - 21:23,22,Automated,PAS startup,MRN4130900,,0.438 seconds
+02/04/21 - 21:23,23,Automated,PAS opened,MRN4130900,,0.484 seconds
+02/04/21 - 21:24,24,Automated,Lung function test,MRN4130900 Mark Bailey,,0.453 seconds
+02/04/21 - 21:24,25,Automated,ICE startup,MRN4130900,,0.610 seconds
+02/04/21 - 21:24,26,Automated,ICE opened,MRN4130900,,0.515 seconds
+02/04/21 - 21:24,27,Automated,PET-CT request,MRN4130900,,0.438 seconds
+02/04/21 - 21:24,28,Automated,Lung function request,MRN,,0.969 seconds
+02/04/21 - 21:24,29,Automated,Bronchoscopy request,MRN4130900,,0.860 seconds
