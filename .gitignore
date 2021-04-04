@@ -1,6 +1,7 @@
 Backup/
 iWB2 Leaner/
 Library/
+library/Private variables.ahk
 OLD/
 QS backups/
 Requests/
@@ -8,6 +9,7 @@ Signatures/
 Templates/
 install.ini
 QIP clicks.xlsx
+QIP_log.txt
 QSLog.txt
 Quick Spiritum.ahk
 settings.ini
