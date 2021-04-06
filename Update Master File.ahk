@@ -1,10 +1,15 @@
+; ***************************************************************
+; Small program to copy changes in the Dev environment to the 
+; Master directory for use by end-users
+; ***************************************************************
+
 #SingleInstance force ; Run only one instance and ignore update dialogue
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 
 #include %A_ScriptDir%\Library\Private variables.ahk
 
-MasterQSPath := MasterDirectory . "Quick Spiritum.ahk"
-DevDirectory := MasterDirectory . "Dev\QuickSpiritum\"
+MasterQSPath := Settings.MasterDirectory . "Quick Spiritum.ahk"
+DevDirectory := Settings.MasterDirectory . "Dev\QuickSpiritum\"
 DevQSPath := DevDirectory . "Quick Spiritum.ahk"
 newLine := "`r`n"
 
@@ -29,6 +34,9 @@ FileCopy, % DevDirectory . "Signatures\*.*", % MasterDirectory . "Signatures",  
 
 ; Copy across template updates
 FileCopy, % DevDirectory . "Templates\*.*", % MasterDirectory . "Templates",  1
+
+; Copy across graphics updates
+FileCopy, % DevDirectory . "Graphics\*.*", % MasterDirectory . "Graphics",  1
 
 
 FileRead, QSDevRead, % DevQSPath
