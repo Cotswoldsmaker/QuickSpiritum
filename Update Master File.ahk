@@ -6,12 +6,15 @@
 #SingleInstance force ; Run only one instance and ignore update dialogue
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 
+
 #include %A_ScriptDir%\Library\Private variables.ahk
+#include %A_ScriptDir%\Library\Basic functions.ahk
 
 MasterQSPath := Settings.MasterDirectory . "Quick Spiritum.ahk"
 DevDirectory := Settings.MasterDirectory . "Dev\QuickSpiritum\"
 DevQSPath := DevDirectory . "Quick Spiritum.ahk"
 newLine := "`r`n"
+
 
 ; GUI to inform dev transfer happening
 Gui, MBGUI:Font, s12
@@ -26,17 +29,17 @@ Gui, MBGUI:+AlwaysOnTop
 
 
 ; Copy across library updates
-FileCopy, % DevDirectory . "Library\*.*", % MasterDirectory . "Library",  1
-FileCopyDir, % DevDirectory . "Library", % MasterDirectory . "Library", 1 
+FileCopy, % DevDirectory . "Library\*.*", % Settings.MasterDirectory . "Library",  1
+FileCopyDir, % DevDirectory . "Library", % Settings.MasterDirectory . "Library", 1 
 
 ; Copy across signature updates
-FileCopy, % DevDirectory . "Signatures\*.*", % MasterDirectory . "Signatures",  1
+FileCopy, % DevDirectory . "Signatures\*.*", % Settings.MasterDirectory . "Signatures",  1
 
 ; Copy across template updates
-FileCopy, % DevDirectory . "Templates\*.*", % MasterDirectory . "Templates",  1
+FileCopy, % DevDirectory . "Templates\*.*", % Settings.MasterDirectory . "Templates",  1
 
 ; Copy across graphics updates
-FileCopy, % DevDirectory . "Graphics\*.*", % MasterDirectory . "Graphics",  1
+FileCopy, % DevDirectory . "Graphics\*.*", % Settings.MasterDirectory . "Graphics",  1
 
 
 FileRead, QSDevRead, % DevQSPath

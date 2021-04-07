@@ -3,7 +3,7 @@
 ; (MRN) or asks for this via GUI and then searches for patient
 ; in selected program or creates a request; If you see !!!, this is a note to me that I need to fix / ; improve something at this point
 ; ***************************************************************
-CurrentVersionNumber := 76
+CurrentVersionNumber := 79
 ; Keep version number on line 6 ;!!!
 
 #SingleInstance force 		; Run only one instance and ignore update dialogue
@@ -164,6 +164,7 @@ else
 ; main files
 ; **************************************************************
 
+#include %A_ScriptDir%\Library\Basic functions.ahk
 #include %A_ScriptDir%\Library\Main header.ahk
 #include %A_ScriptDir%\Library\PFT header.ahk
 #include %A_ScriptDir%\Library\Requests header.ahk
@@ -178,7 +179,7 @@ else
 #include %A_ScriptDir%\Library\Sunrise.ahk
 #include %A_ScriptDir%\Library\Spiritum.ahk
 #include %A_ScriptDir%\Library\Email.ahk
-#include %A_ScriptDir%\Library\Acc.ahk
+;#include %A_ScriptDir%\Library\Acc.ahk
 #include %A_ScriptDir%\Library\VBA_AHK_IPC.ahk
 #include %A_ScriptDir%\Library\QIP.ahk
 
@@ -209,7 +210,7 @@ if !Developing
 	if fileExist(InstallINIPath) ; Designed so that an installation version of AHK can be run outside of the master directory
 	{
 		if (A_Args[1] = "update")
-			TrayTip, Quick Spiritum, % "Updating. Please wait for 'running' message before trying to use QS again"
+			TrayTip, Quick Spiritum, % "Updating. Please wait for 'running' message before trying to use QS again..."
 		else
 			TrayTip, Quick Spiritum, % "Copying master Quick Spiritum program to Desktop"
 		
