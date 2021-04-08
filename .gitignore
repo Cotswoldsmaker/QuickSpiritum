@@ -1,6 +1,6 @@
 Graphics/
-Library/
-library/Private variables.ahk
+#Library/
+Library/Private variables.ahk
 Requests/
 Signatures/
 Templates/

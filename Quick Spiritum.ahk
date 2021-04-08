@@ -1,9 +1,10 @@
-; ***************************************************************
+; ******************************************************************************
 ; Quick Spiritum (QS) main code - copies selected hospital number 
 ; (MRN) or asks for this via GUI and then searches for patient
-; in selected program or creates a request; If you see !!!, this is a note to me that I need to fix / ; improve something at this point
-; ***************************************************************
-CurrentVersionNumber := 79
+; in selected program or creates a request; If you see !!!, this is a note to me 
+; that I need to fix / improve something at this point
+; ******************************************************************************
+CurrentVersionNumber := 91
 ; Keep version number on line 6 ;!!!
 
 #SingleInstance force 		; Run only one instance and ignore update dialogue
@@ -21,7 +22,7 @@ SetKeyDelay, 10, 10
 SetDefaultMouseSpeed, 0
 UpdateCheck := True			; Will set to False in the future if running QS without a master file on a shared drive
 Developing := True			; True turns off coping to desktop instead of running (Update Master File.ahk turns this off)
-emailTest := True			; True sends emails / requests to developer only (Update Master File.ahk turns this off when copying from Dev to Master location)
+emailTest := True			; True sends emails / requests to developer only ('Update Master File.ahk' turns this off when copying from Dev to Master location)
 pythonEXE := True			; Using EXE or .py version of python script
 resetSettingsFile := False	; If new settings in settings file added then set to True to reset the end-users settings and add new ones.
 
@@ -48,7 +49,7 @@ GraphicsPath := CurrentDirectory . "Graphics\"
 
 if Developing
 {
-	Settings.RequestsFolder := settings.MasterDirectory . "Dev\QuickSpiritum\Requests\"
+	Settings.RequestsFolder := settings.MasterDirectory . "Dev\Requests\"
 }
 
 ; Get or store settings in file "settings.ini"
@@ -186,7 +187,7 @@ else
 ; Might not need the below functions, I will decide at some point
 #include %A_ScriptDir%\Library\Vis2\Lib\Vis2.ahk
 #include %A_ScriptDir%\Library\Vis2\Lib\Gdip_All.ahk
-#include %A_ScriptDir%\Library\Vis2\Lib\JSON.ahk
+;#include %A_ScriptDir%\Library\Vis2\Lib\JSON.ahk
 
 
 ; Read through files in the startup folder
@@ -232,6 +233,7 @@ if !Developing
 		FileCopyDir, % Settings.MasterDirectory . "Library", %DesktopSubFolder%\Library, 1 	
 		
 		FileCreateShortcut, %DesktopProgramPath%, %Desktop%%DesktopShortcutName%, %DesktopSubFolder%,, Quick Spiritum Shortcut, %DesktopSubFolder%\Graphics\QS logo.ico
+		TrayTip, Quick Spiritum, % "Transfer complete"
 		ExitApp
 	}
 	
@@ -288,15 +290,15 @@ checkForUpdate()
 	global
 	local lineM := ""
 	local MasterVersionNumber := ""
-	
+
 	; to check for master AHK update
-	if (UpdateCheck == True AND CurrentDirectory != MasterPath)
+	if (UpdateCheck == True AND CurrentProgramPath != MasterPath)
 	{
 		if FileExist(MasterPath)
 		{
-			Loop, read, MasterPath
+			Loop, read, % MasterPath
 			{
-				if (inStr(A_LoopReadLine, CurrentVersionNumber) == 1)
+				if (inStr(A_LoopReadLine, "CurrentVersionNumber") == 1)
 				{
 					MasterVersionNumber := Trim(SubStr(A_LoopReadLine, 25))
 
