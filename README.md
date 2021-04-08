@@ -4,7 +4,7 @@ A single digital solution to automate and speed up clinical software systems use
 ## Not just RPA
 Quick Spiritum (QS) is built within the robotic process automation (RPA) open source program AutoHotKey. Its main functionality is to automate and speed up daily tasks. Systems that it can currently control and search for patient results include:
 
--Sunrise EPR
+-Sunrise EPR`r`n
 -Trakcare
 -InfoFlex 
 -PACS 
