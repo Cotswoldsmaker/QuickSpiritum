@@ -357,7 +357,8 @@ HotKeys := FiFoArray("F1" , "Info Box"
 	   ,"+F4" , "Lung Function Request"
 	   ,"+F5" , "Bronchoscopy Request"
 	   ,"+F6" , "Healthy Lifestyles Gloucestershire Referral"
-	   ,"+F7" , "SleepStation Referral")
+	   ,"+F7" , "SleepStation Referral"
+	   ,"+F11", "Message_PIV")
 
 ; Set the hotkeys
 For index, Key in HotKeys[]
@@ -440,15 +441,9 @@ ShellMessage(wParam,lParam)
 
 
 
-/*
-+F11::
-if runningStatus()
-	return
-GOV_UK_Notify()
-msgbox, Message sent
-runningStatus("done")
-return
-*/
+
+
+
 
 
 
@@ -910,6 +905,18 @@ return
 SleepStationReferral:
 referralRequestCreateAndSend("Sleepstation")
 return
+
+
+
+
+Message_PIV:
+if runningStatus()
+	return
+GOV_UK_Notify()
+msgbox, Message sent
+runningStatus("done")
+return
+
 
 
 
