@@ -1,10 +1,10 @@
 #Graphics/
 #Library/
-#Library/Private variables.ahk
+Library/Private variables.ahk
 Requests/
 Signatures/
 Templates/
-install.ini
+#install.ini
 #Quick Spiritum.ahk
 settings.ini
 # Update Master File.ahk
