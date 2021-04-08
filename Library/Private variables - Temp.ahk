@@ -3,6 +3,12 @@
 ; API keys)
 ; ***************************************************************
 
+; ******************************************************
+; Place only the next line of code in the library folder version of 'Private variables.ahk'. Then include the rest of this file in the without the #include line in another folder that will not be send to GitHub. This is very important as patient information and secure API keys are stored in this file and you do not want this uploaded to the web!
+; ******************************************************
+#include S:\[path]\Private variables.ahk
+
+
 ; Length of MRN (hospital number)
 MRNLength := 7
 
