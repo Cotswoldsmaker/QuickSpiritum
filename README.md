@@ -44,6 +44,6 @@ Anyone interested in building a function to control the new online NHS mail serv
 ## Notes
 * QS turns off Imprivata from automatically entering credentials
 * QS places a shortcut in the startup folder, so QS will start every time your OS restarts
-
+* Has a quality improvement (QI) program built directly into it. You run the QI program and it stores the time it takes to complete difference tasks manually and then with the aid of automation. You can then compare the times and see the time saved. 
 ## More to come
 * I am still working actively on this project, and plan to expand the README file to make it easier to understand this program.
