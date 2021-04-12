@@ -1121,3 +1121,34 @@ timeDiff(startTime, FinishTime)
 
 
 
+
+; Checks if in format HH:MM
+checkifTime(timeStr)
+{
+	length := StrLen(timeStr)
+	
+	if (length < 3 and length > 5)
+		return False
+		
+	SCPosition := InStr(timeStr, ":")
+	
+	if (SCPosition == 0 or SCPosition == 1 or SCPosition == length)
+		return False
+		
+	H := SubStr(timeStr, 1, SCPosition - 1)
+	if H is not digit
+		return False
+	
+	M := SubStr(timeStr, SCPosition + 1)
+	if M is not digit
+		return False
+
+	if (H >= 0 and H <= 23)
+		if (M >= 0 and M <= 59)
+				return True
+	
+	return False
+}
+
+
+

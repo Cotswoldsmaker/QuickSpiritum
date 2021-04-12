@@ -74,7 +74,7 @@ sleepQuestionnaire_GUI()
 	yAdditive := yAdditive + 45
 	
 	Gui, SQues:Add, Text, x10 y%yAdditive%, % "How many units of alcohol do you drink in a week?"
-	Gui, SQues:Add, DropDownList, x%FieldStart% y%yAdditive% W%FieldWidth% vSQuesEtOH, % "0-5|5-10|10-15|15-30|30+"
+	Gui, SQues:Add, Edit, x%FieldStart% y%yAdditive% W%FieldWidth% vSQuesEtOH
 	yAdditive := yAdditive + 45
 	
 	Gui, SQues:Add, Checkbox, x%checkBoxStart% y%yAdditive% vSQuesDriver +Right w%checkBoxWidth%, % "Do you hold a driving licence?"
@@ -107,11 +107,33 @@ SQuesOK()
 	Gui SQues:Submit, Nohide
 	SQues_OKButtonPressed := "yes"
 	
-	; !!! code to check all fields filled in (or not)
-		
+	if (SQuesFullName == "")
+		errorString .= "- No name provided.`n"
+	
+	if !(SQuesMobileNumber == "")
+		if !MobileNumberCheck(SQuesMobileNumber)
+			errorString .= "- Not a recognisable mobile number.`n"
+	
+	if !checkifTime(SQuesBedTime)
+		errorString .= "- Bed time is not in a recognisable format. Please use 24-hour format - HH:MM.`n"
+	
+	if !checkifTime(SQuesWakeupTime)
+		errorString .= "- Wake up time is not in a recognisable format. Please use 24-hour format - HH:MM.`n"
+	
+	
+	if (SQuesEtOH == "")
+		errorString .= "- Please provide the units of alcohol consumed on a weekly bases.`n"
+	
+	if (errorString != "")
+	{
+		MB("Please correct the below errors and submit again:`n" . errorString)
+		return False
+	}
+	
 	Gui, SQues:Destroy
+	MB("Sleep questionnaire submitted to database.`n`nPatient to now have sleep study")
 	sleepStudy_GUI()
-	return
+	return True
 }
 
 
@@ -186,7 +208,7 @@ SSOK()
 {
 	global
 	local errorString := ""
-	local fullURL := ""
+	local fullURL := youtubeURL . introID
 	local message := ""
 	local timeInBed := ""
 	local BMI := ""
@@ -194,23 +216,25 @@ SSOK()
 	Gui SS:Submit, Nohide
 	SS_OKButtonPressed := "yes"
 	
-	; !!! code to check all fields filled in (or not)
+	if (SSHeight == "")
+		errorString .= "- Height missing.`n"
+		
+	if (SSWeight == "")
+		errorString .= "- Weight missing.`n"
+	
+	if (SSESS == "")
+		errorString .= "- Epworth score missing.`n"
+		
+	if (SSAHI == "")
+		errorString .= "- AHI missing.`n"
+	
+	if (errorString != "")
+	{
+		MB("Please correct the below errors and submit again:`n" . errorString)
+		return False
+	}
 	
 	Gui, SS:Destroy
-	
-	fullURL := youtubeURL . introID
-
-/*
-*introID := "9pjIiY2Ekqg"
-*obeseID := "ClYjSv93d3k"
-*morbidlyObeseID := "lx84USt7Oxo"
-*smokingID := "kNXWi97Fax8"
-*insomniaID := "7JnItBSmEro"
-*sleepHygieneID := "UG08RTvvGvs"
-*alcoholID := "WU5tD2CUvNE"
-*sedativesID := "qcrbUoW7qzs"
-*DVLAID := "vXo7Z6Wpbm8"
-*/
 
 	if (timeDiff(SQuesBedTime, SQuesWakeupTime) < 6)
 		fullURL .= "," . sleepHygieneID
@@ -227,31 +251,34 @@ SSOK()
 	if inStr(SQuesMedications, "bisoprolol")
 		fullURL .= "," . sedativesID
 	
-	SSheight := SSHeight / 100
-	
-	BMI :=	SSWeight / (SSheight * SSheight)
-	msgbox, % BMI
+	if !(SSHeight == "" or SSWeight == "")
+	{
+		SSHeight := SSHeight / 100
+		
+		BMI :=	SSWeight / (SSheight * SSheight)
 
-	if (BMI >= 30 AND BMI < 40)
-		fullURL .= "," . obeseID
-	else if (BMI < 40)
-		fullURL .= "," . morbidlyObeseID
+		if (BMI >= 30 AND BMI < 40)
+			fullURL .= "," . obeseID
+		else if (BMI >= 40)
+			fullURL .= "," . morbidlyObeseID
+	}
 	
-	if SQuesDriver
+	if (SQuesDriver and SSAHI >= 15)
 		fullURL .= "," . DVLAID
 		
 	
 	message := "TEST TEST ONLY! Please click the below link to watch a personalised information video following your sleep study: " . fullURL
-	msgbox, % message
-	;clipboard := fullURL
+	
+	;msgbox, % message
 	
 	if !MobileNumberCheck(SQuesMobileNumber)
 		return False
 	
+	MB("Sending SMS message with personalised patient video")
+	
 	MobileNumber := "+44" . SubStr(SQuesMobileNumber, 2)
 	variables := "SMS;" . API_key . ";" . SMS_template_ID . ";" .  MobileNumber . ";" .  message
 	sendMessageGUKN("SMS message", variables)
-	msgbox, % "Message sent"
 	return
 }
 

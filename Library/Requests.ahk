@@ -1795,7 +1795,10 @@ GUKN_SMSOK()
 	Gui, GUKN_SMS:Destroy
 	
 	if !MobileNumberCheck(GUKN_mobileNumber)
+	{
+		MB("Error with mobile number. Please try again")
 		return "Fail"
+	}
 
 	MobileNumber := "+44" . SubStr(GUKN_mobileNumber, 2)
 	variables := "SMS;" . API_key . ";" . SMS_template_ID . ";" .  MobileNumber . ";" .  GUKN_SMS_message
@@ -2019,7 +2022,7 @@ sendMessageGUKN(method, variables, MMF := False)
 	
 	if (instr(outcome, "pass") = 1)
 	{
-		;msgbox, % method . " sent " . outcome
+		msgbox, % method . " sent"
 		return True
 	}
 	else if (outCome = "timeOut")
@@ -2088,7 +2091,10 @@ send_GUKN(rawData)
 		}
 		
 		if !MobileNumberCheck(mobileNumber)
+		{
+			MB("Error with mobile number. Please try again")
 			GoTo Fail
+		}
 		
 		mobileNumber := "+44" . SubStr(mobileNumber, 2)
 		
@@ -2166,8 +2172,6 @@ MobileNumberCheck(number)
 			if (not number ~= "[^0-9]")
 				return True
 	
-	; Return false if above fails
-	MB("Error with mobile number. Please try again")
 	return False
 
 }

@@ -909,6 +909,8 @@ return
 
 
 SleepQuestionnaire:
+;msgbox, % checkifTime("3:72")
+;return
 sleepQuestionnaire(MRN1)
 return
 
@@ -919,7 +921,6 @@ SendPatientInformationVideos:
 if runningStatus()
 	return
 GOV_UK_Notify()
-msgbox, Message sent
 runningStatus("done")
 return
 
