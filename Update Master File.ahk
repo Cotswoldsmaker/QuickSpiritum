@@ -44,9 +44,17 @@ FileCopy, % DevDirectory . "Graphics\*.*", % Settings.MasterDirectory . "Graphic
 
 FileRead, QSDevRead, % DevQSPath
 lines := StrSplit(QSDevRead, newLine)
-MasterVersionNumber := Trim(SubStr(lines[6], 25))
-MasterVersionNumberInt := MasterVersionNumber + 1
-lines[6] := "CurrentVersionNumber := " . MasterVersionNumberInt
+
+For key, value in lines
+{
+	if (inStr(value, "CurrentVersionNumber") == 1)
+	{
+		MasterVersionNumber := Trim(SubStr(value, 25))
+		MasterVersionNumberInt := MasterVersionNumber + 1
+		lines[key] := "CurrentVersionNumber := " . MasterVersionNumberInt 
+		break
+	}
+}
 
 
 ; Dev file

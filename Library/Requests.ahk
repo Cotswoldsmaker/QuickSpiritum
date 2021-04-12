@@ -2167,7 +2167,7 @@ MobileNumberCheck(number)
 				return True
 	
 	; Return false if above fails
-	msgbox, % "Error with mobile number. Please try again"
+	MB("Error with mobile number. Please try again")
 	return False
 
 }
@@ -2325,7 +2325,6 @@ RRGetExtraInfo(MRN, RRtype)
 Sleepstation_GUI(MRN)
 {
 	global
-	
 	local Title := "Sleepstation referral details"
 	local GUIStart := 200
 	local GUIWidth := 300

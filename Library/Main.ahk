@@ -535,7 +535,7 @@ GetCredentials(system, sendMethod := False)
 		MB("DllCall error invoking CredFree: " . ErrorLevel)
 		return False
 	} 
-	
+
 	if SendMethod
 	{
 		PasswordAlter()
@@ -550,6 +550,7 @@ GetCredentials(system, sendMethod := False)
 PasswordAlter()
 { 
 	global
+	local TempPassword := ""
 
 	Loop, Parse, password
 	{
@@ -769,6 +770,8 @@ return
 ErrorHandler(err := "", Program := "", Systems := "", message := "")
 {
 	global CurrentProgramPath, CurrentVersionNumber
+	
+	GlobalInputLockSet(False)
 	
 	if (err = "")
 	{
@@ -1094,4 +1097,27 @@ SubtitleClose()
 	vis2Obj.subtitle.destroy()
 	return
 }
+
+
+
+; Code acknowledgement:
+; jebb - https://autohotkey.com/board/topic/39129-help-calculating-the-difference-between-two-times/page-2 - 29/03/2009
+timeDiff(startTime, FinishTime) 
+{
+  starthour := SubStr(startTime, 1, 2)
+  startminute := SubStr(startTime, 4, 2)
+  Start := 20000101 starthour startminute "00"
+
+  finishhour := SubStr(finishTime, 1, 2)
+  finishminute := SubStr(finishTime, 4, 2)
+  finish := 20000101 finishhour finishminute "00"
+  finish -= start, seconds
+
+  T = 20000101000000 
+  T += finish,Seconds 
+  FormatTime FormdTHH, %T%, HH.mm
+  return, FormdTHH
+}
+
+
 

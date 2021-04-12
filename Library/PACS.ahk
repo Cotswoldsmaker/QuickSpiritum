@@ -29,7 +29,7 @@ PACSSearch(MRN)
 	{
 		if (!WinExist(PACSTitle) OR !ControlPresent("Button2", PACSTitle) == True)
 		{
-			if (GetCredentials(system) == False)
+			if (GetCredentials(system, True) == False)
 			{
 				return False
 			}

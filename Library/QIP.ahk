@@ -236,10 +236,7 @@ CleanUp:
 QIP_task(ManualAutomated, task, program, MRNStore, Request := False)
 {
 	global
-	
-	MRN := MRNStore
 	counter += 1
-	
 	local title := "QIP - " . ManualAutomated
 	local message
 	local messageRepeat := "Are you happy with this run? If not press 'Repeat'."
@@ -253,6 +250,7 @@ QIP_task(ManualAutomated, task, program, MRNStore, Request := False)
 	
 	while True
 	{
+		MRN := MRNStore
 		result := QIP_sub(title, message)
 
 		if (result == "cancelled")

@@ -3,9 +3,9 @@
 ; (MRN) or asks for this via GUI and then searches for patient
 ; in selected program or creates a request; If you see !!!, this is a note to me 
 ; that I need to fix / improve something at this point
-; ******************************************************************************
-CurrentVersionNumber := 91
-; Keep version number on line 6 ;!!!
+
+CurrentVersionNumber := 96
+
 
 #SingleInstance force 		; Run only one instance and ignore update dialogue
 #NoEnv  					; Recommended for performance and compatibility with future AutoHotkey releases.
@@ -180,14 +180,13 @@ else
 #include %A_ScriptDir%\Library\Sunrise.ahk
 #include %A_ScriptDir%\Library\Spiritum.ahk
 #include %A_ScriptDir%\Library\Email.ahk
-;#include %A_ScriptDir%\Library\Acc.ahk
 #include %A_ScriptDir%\Library\VBA_AHK_IPC.ahk
 #include %A_ScriptDir%\Library\QIP.ahk
+#include %A_ScriptDir%\Library\Sleep service PPV.ahk
 
-; Might not need the below functions, I will decide at some point
+; !!! Might not need the below functions, I will decide at some point
 #include %A_ScriptDir%\Library\Vis2\Lib\Vis2.ahk
 #include %A_ScriptDir%\Library\Vis2\Lib\Gdip_All.ahk
-;#include %A_ScriptDir%\Library\Vis2\Lib\JSON.ahk
 
 
 ; Read through files in the startup folder
@@ -357,8 +356,10 @@ HotKeys := FiFoArray("F1" , "Info Box"
 	   ,"+F4" , "Lung Function Request"
 	   ,"+F5" , "Bronchoscopy Request"
 	   ,"+F6" , "Healthy Lifestyles Gloucestershire Referral"
-	   ,"+F7" , "SleepStation Referral"
-	   ,"+F11", "Message_PIV")
+	   ,"+F7" , "Sleepstation Referral"
+	   ,"+F10", "Sleep Questionnaire"
+	   ,"+F11", "Send Patient Information Videos"
+	   ,"+F12", "Quality Improvement Program")
 
 ; Set the hotkeys
 For index, Key in HotKeys[]
@@ -447,9 +448,7 @@ ShellMessage(wParam,lParam)
 
 
 
-+F12::
-QIP_main()
-return
+
 
 ; *******************
 ; End of Dev material
@@ -909,12 +908,26 @@ return
 
 
 
-Message_PIV:
+SleepQuestionnaire:
+sleepQuestionnaire(MRN1)
+return
+
+
+
+
+SendPatientInformationVideos:
 if runningStatus()
 	return
 GOV_UK_Notify()
 msgbox, Message sent
 runningStatus("done")
+return
+
+
+
+
+QualityImprovementProgram:
+QIP_main()
 return
 
 
