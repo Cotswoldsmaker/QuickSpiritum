@@ -1,7 +1,8 @@
 ﻿; **************************************************************************************
 ; Private variables - RUN ME ONCE! - run this program once to create a Private variables
-; Folder outside of the git folder (in the folder before the \QuickSpiritum\ folder, 
-; so secret / trust data is not copied on to GitHub
+; folder outside of the git folder (in the folder before the \QuickSpiritum\ folder, 
+; so secret / trust data is not copied on to GitHub. Also creates a
+; 'Private variables.ahk file in the library folder with a link to the above
 ; **************************************************************************************
 
 CurrentProgramPath := A_ScriptFullPath
