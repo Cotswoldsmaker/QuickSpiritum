@@ -1,5 +1,6 @@
 # QuickSpiritum
 A single digital solution to automate and speed up clinical software systems used in everyday clinical life
+---_
 
 ## Overview
 Quick Spiritum (QS) is built within the robotic process automation (RPA) open source program AutoHotKey. Quick Spiritum is a spin off from work I did on a database called Spiritum, which also used RPA. Spiritum is Latin for 'breath' (as I am from a respiratory background). Its main functionality is to automate and speed up daily clinical tasks. Systems that it can currently enter credentials for, control and search for patient results include:
