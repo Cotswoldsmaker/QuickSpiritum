@@ -35,7 +35,9 @@ Anyone interested in building a function to control the new online NHS mail serv
 ## Installation
 * Install AutoHotKey onto any computer you want to use QS on.
 * Have a shared drive that users can access.
-* Basically clone this repro. Then change the file name of 'Private variables - temp.ahk' to 'Private variables.ahk'. Then follow the instructions with this file to keep trust / patient information off the repo.
+* Basically clone this repro.
+* Run the file '.\library\Private variables - RUN ME ONCE!.ahk'. This will create a link file and then a file outside of the git folder that you can safely store secret/trust/surgery information in that wont be uploaded to GitHub.
+* Fill in the new 'Private variables.ahk' file (not the link file in the '\Library' folder) with information needed.
 * You will need word templates with bookmarks for QS to fill in. Place in a QuickSpiritum\Templates\ folder. 
 * You will need copies of signatures for all users to be able to send requests. Place in QuickSpiritum\Signatures\ folder.
 * When you want to allow others to use QS and install it on the desktop, run the 'Update Master File.ahk' script to move QS out of the Dev environment. Any user can then click on this master file to install it to their desktop.
