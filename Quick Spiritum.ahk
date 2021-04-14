@@ -4,7 +4,7 @@
 ; in selected program or creates a request; If you see !!!, this is a note to me 
 ; that I need to fix / improve something at this point
 
-CurrentVersionNumber := 96
+CurrentVersionNumber := 97
 
 
 #SingleInstance force 		; Run only one instance and ignore update dialogue

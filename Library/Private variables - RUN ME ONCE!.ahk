@@ -1,12 +1,64 @@
-﻿; ***************************************************************
-; Place variables here that should not be known to public (eg 
-; API keys)
-; ***************************************************************
+﻿; **************************************************************************************
+; Private variables - RUN ME ONCE! - run this program once to create a Private variables
+; Folder outside of the git folder (in the folder before the \QuickSpiritum\ folder, 
+; so secret / trust data is not copied on to GitHub
+; **************************************************************************************
 
-; ******************************************************
-; Place only the next line of code in the library folder version of 'Private variables.ahk'. Then include the rest of this file in the without the #include line in another folder that will not be send to GitHub. This is very important as patient information and secure API keys are stored in this file and you do not want this uploaded to the web!
-; ******************************************************
-#include S:\[path]\Private variables.ahk
+CurrentProgramPath := A_ScriptFullPath
+PV_name := "Private variables.ahk"
+QSPreviousFolderPosition := ""
+PrivateVariablesLinkPath := A_ScriptDir . "\" . PV_name
+PrivateVariablesMainPath := ""
+newLine := "`r`n"
+writing := False
+created := False
+
+
+QSPreviousFolderPosition := inStr(CurrentProgramPath, "\QuickSpiritum") 
+PrivateVariablesMainPath := SubStr(CurrentProgramPath, 1, QSPreviousFolderPosition) . PV_name
+
+if !fileExist(PrivateVariablesLinkPath)
+{
+	created := True
+	fileObj := FileOpen(PrivateVariablesLinkPath, "w")
+	fileObj.Write("#include " . PrivateVariablesMainPath)
+}
+
+if !fileExist(PrivateVariablesMainPath)
+{
+	created := True
+	FileRead, FullFileContents, % CurrentProgramPath
+	lines := StrSplit(FullFileContents, newLine)
+	
+	fileObj := FileOpen(PrivateVariablesMainPath, "w")
+	
+	For key, value in lines
+	{
+		if (inStr(value, "; END COPY") = 1)
+		{
+			break
+		}
+		
+		if writing
+			fileObj.Write(value . newLine)
+		
+		if (inStr(value, "; START COPY") = 1)
+		{
+			writing := True
+		}
+	}
+}
+
+if created
+	msgbox, % "Created QS 'Private variables.ahk' link file and/or main file"
+else
+	msgbox, % "Link file and main 'Private variables.ahk' files have already been created"
+
+/*
+; START COPY
+; *********************************************************************
+; Place variables here that should not be known to public (eg API keys)
+; *********************************************************************
 
 
 ; Length of MRN (hospital number)
@@ -18,7 +70,7 @@ TestEmail := "emailAddress"
 
 ; Make sure you put a backslash on the end of paths to the below folders
 settings := {}
-settings.MasterDirectory := "S:\path\"
+settings.MasterDirectory := "S:\[path]\"
 settings.RequestsFolder := settings.MasterDirectory . "Requests\"	; Where to place request PDFs. In Dev mode these are placed in the dev folder
 settings.TemplatesFolder := CurrentDirectory . "Templates\"
 settings.LocListLocationz := "1"
@@ -99,7 +151,7 @@ MRN29 := "0000000"
 secretaryExt := 1234 
 
 
-PFTPath := "S:\path\"
+PFTPath := "S:\[path]\"
 
 
 clinician1 := "Dr ..."
@@ -107,3 +159,5 @@ username1 := "full name"
 userEmail1 := "emailAddress"
 mobile1 := "mobile number"
 address1 := "1st line, 2nd line, City, Postcode"
+; END COPY
+*/
