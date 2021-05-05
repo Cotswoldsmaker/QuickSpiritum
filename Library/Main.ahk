@@ -1,8 +1,44 @@
 ﻿; ****************************************************************
-; Main library for AHK (mind out for GOTO statements with returns)
-; !!! I need to merge the header and main files
+; Main library for AHK
 ; ****************************************************************
 
+
+
+; *********
+; Variables
+; *********
+
+; Progress bar
+PBTitle := "Progress"
+PBMainString := ""
+PBCounter := 0
+PBPercentage := 0
+PBText := ""
+
+
+; general
+ptr := A_PtrSize ? "ptr" : "Uint" 	; determine if 32 or 64 system when using Windows DLL API
+GlobalInputLock := False
+username := "" 
+password := ""
+cmdkeyTitle := "C:\Windows\SYSTEM32\cmdkey.exe"
+hwndMyPic := ""
+picture  := ""
+oWord := ""
+checkedBox := Chr(0xFE)
+uncheckedBox := Chr(0x6F)	
+signatureHeight := 30
+MBMessage := ""
+ErrCounterGlobal := 0
+ImprivataRunning := False
+vis2Obj := ""
+
+
+
+
+; *********
+; Functions
+; *********
 
 writeFAST(Control, Message, WinTitle, SleepAmount = 500)
 {
@@ -158,8 +194,13 @@ ToggleLock(cmd)
 	return True
 }
 
-DUMMY:
-Return
+
+
+
+DUMMY()
+{
+	return
+}
 
 
 
@@ -405,6 +446,7 @@ GraphicMove(GraphicName, Xoffset, Yoffset, type := "bmp", variance := 50, respon
 
 
 
+
 ; Uses Windows Credentials to store credentials
 SetCredentials(system, sendMethod := False)
 {
@@ -459,16 +501,17 @@ SetCredentials(system, sendMethod := False)
 SetCredentialsGUI(system)
 {
 	global
+	local GUI_name := "crendentials_GUI" 
 	
-	Gui, CrendentialsGUI:Add, Text, ym, No credentials on file for %system%. Please complete these below:
-	Gui, CrendentialsGUI:Add, Text, x10 y30, Username:
-	Gui, CrendentialsGUI:Add, Edit, x70 y30 vusername
-	Gui, CrendentialsGUI:Add, Text, x10 y60, Password:
-	Gui, CrendentialsGUI:Add, Edit, x70 y60 vpassword Password
-	Gui, CrendentialsGUI:Add, Button, x230 y90 default,  &OK
-	Gui, CrendentialsGUI:Add, Button, x270 y90,  &Cancel
-	Gui, CrendentialsGUI:Show,, Credentials needed
-	Gui, CrendentialsGUI:+AlwaysOnTop
+	Gui, %GUI_name%:Add, Text, ym, No credentials on file for %system%. Please complete these below:
+	Gui, %GUI_name%:Add, Text, x10 y30, Username:
+	Gui, %GUI_name%:Add, Edit, x70 y30 vusername
+	Gui, %GUI_name%:Add, Text, x10 y60, Password:
+	Gui, %GUI_name%:Add, Edit, x70 y60 vpassword Password
+	Gui, %GUI_name%:Add, Button, x230 y90 default gcrendentials_OK,  &OK
+	Gui, %GUI_name%:Add, Button, x270 y90 gcrendentials_close,  &Cancel
+	Gui, %GUI_name%:Show,, Credentials needed
+	Gui, %GUI_name%:+AlwaysOnTop
 	WinWaitClose, Credentials needed
 	return True
 }
@@ -476,18 +519,26 @@ SetCredentialsGUI(system)
 
 
 
+crendentials_OK()
+{
+	Gui, Crendentials_GUI:Submit
+	Gui, Crendentials_GUI:Destroy
+	return
+}
 
-CrendentialsGUIButtonOK:
-Gui, Submit
-Gui, Destroy
-return
 
 
 
+crendentials_GUIGuiClose()
+{
+	crendentials_close()
+}
+crendentials_close()
+{
+	Gui, crendentials_GUI:Destroy
+	return
+}
 
-CrendentialsGUIButtonCancel:
-Gui, Destroy
-return
 
 
 
@@ -590,26 +641,28 @@ DeleteCredentials(system)
 
 CreateProgressBar()
 {
-	global PBTitle, PBCounter, PBPercentage, PBText
-
+	global
 	PBPercentage := 0
-
-	Gui, PB:Font, s12
-	GUI, PB:Add, Progress, vPBCounter H50 W270
-	Gui, PB:Add, Text, x130 y60 W50 vPBPercentage, 0`%
-	Gui, PB:Add, Text, x15 y80  H270 W270 +Wrap vPBText, start
-	GUI, PB:Show, H270 W300, %PBTitle%
-	Gui, PB:+AlwaysOnTop
+	local GUI_name := "progressBar_GUI" 
+	
+	
+	Gui, %GUI_name%:Font, s12
+	GUI, %GUI_name%:Add, Progress, vPBCounter H50 W270
+	Gui, %GUI_name%:Add, Text, x130 y60 W50 vPBPercentage, 0`%
+	Gui, %GUI_name%:Add, Text, x15 y80  H270 W270 +Wrap vPBText, start
+	GUI, %GUI_name%:Show, H270 W300, %PBTitle%
+	Gui, %GUI_name%:+AlwaysOnTop
 	return True
 }
 
 
 
 
-PBClose:
-PBGuiClose:
-Gui, PB:Destroy
-return
+progressBar_GUIGuiClose()
+{
+	Gui, progressBar_GUI:Destroy
+	return
+}
 
 
 
@@ -634,30 +687,41 @@ CloseProgressBar()
 
 
 
-UpdateProgressBar(amount := 10, mode := "additive", text := "")
+UpdateProgressBar(amount := 10, mode := "additive", text := "", waitForClosure := False)
 {
-	global PBCounter, PBPercentage, PBText
+	global
+	local GUI_name := "progressBar_GUI"
 
 	if PBPercentage < 100
 	{
 		if (mode = "additive")
 		{
-			GuiControl, PB: , PBCounter, +%amount%
+			GuiControl, %GUI_name%: , PBCounter, +%amount%
 			PBPercentage := PBPercentage + amount
-			GuiControl, PB: , PBPercentage, %PBPercentage%`%
+			GuiControl, %GUI_name%: , PBPercentage, %PBPercentage%`%
 		}
 		else if (mode = "absolute")
 		{
-			GuiControl, PB: , PBCounter, %amount%
+			GuiControl, %GUI_name%: , PBCounter, %amount%
 			PBPercentage := amount
-			GuiControl, PB: , PBPercentage, %PBPercentage%`%
+			GuiControl, %GUI_name%: , PBPercentage, %PBPercentage%`%
 		}
-
 	}
 
 	if !(text = "")
 	{
-		GuiControl, PB: , PBText, %text%
+		GuiControl, %GUI_name%: , PBText, %text%
+	}
+	
+	if waitForClosure
+	{
+		Loop, 50
+		{
+			if !WinExist(PBTitle)
+				break
+				
+			sleep 200
+		}
 	}
 
 	return True
@@ -668,7 +732,8 @@ UpdateProgressBar(amount := 10, mode := "additive", text := "")
 
 GraphicsDimensions(Path)
 {
-	global hwndMyPic, picture 
+	global
+	local x, y, w, h
 
 	Gui, PicDimensions:Add, Picture, vpicture hwndMyPic, %Path%
 	ControlGetPos, x, y, w, h, , ahk_id %MyPic%
@@ -697,35 +762,36 @@ MB(Message, Title := "Quick Spiritum", method := "message", wait := True)
 {	
 	global
 	MBMessage := Message
+	local GUI_name := "MB_GUI" 
 	
 	SetTitleMatchMode, 3
 	
 
 	if (method = "message")
 	{
-		Gui, MBGUI:Font, s12
-		Gui, MBGUI:Color, %dialogueColour%
-		Gui, MBGUI:Add, Text, ym w300 hwndMessagePtr, %Message%
+		Gui, %GUI_name%:Font, s12
+		Gui, %GUI_name%:Color, %dialogueColour%
+		Gui, %GUI_name%:Add, Text, ym w300 hwndMessagePtr, %Message%
 		ControlGetPos, x, y, w, h, , ahk_id %MessagePtr%
 		h := h + 50
-		Gui, MBGUI:Add, Button, x350 y%h% default,  &OK
-		Gui, MBGUI:Show,, %Title%
-		Gui, MBGUI:+AlwaysOnTop
+		Gui, %GUI_name%:Add, Button, x350 y%h% default gMB_close,  &OK
+		Gui, %GUI_name%:Show,, %Title%
+		Gui, %GUI_name%:+AlwaysOnTop
 		
 		if wait
 			WinWaitClose, %Title%
 	}
 	else if (method = "DevInform")
 	{
-		Gui, MBGUI:Font, s12
-		Gui, MBGUI:Color, %dialogueColour%
-		Gui, MBGUI:Add, Text, ym w1000 hwndMessagePtr, % Message . "`n`nAre you happy to send the above error message to " . username1 . "?"
+		Gui, %GUI_name%:Font, s12
+		Gui, %GUI_name%:Color, %dialogueColour%
+		Gui, %GUI_name%:Add, Text, ym w1000 hwndMessagePtr, % Message . "`n`nAre you happy to send the above error message to " . username1 . "?"
 		ControlGetPos, x, y, w, h, , ahk_id %MessagePtr%
 		h := h + 50
-		Gui, MBGUI:Add, Button, x900 y%h% default,  &Yes
-		Gui, MBGUI:Add, Button, x950 y%h%,  &No
-		Gui, MBGUI:Show,, Error - %Title%
-		Gui, MBGUI:+AlwaysOnTop
+		Gui, %GUI_name%:Add, Button, x900 y%h% default gMB_Yes,  &Yes
+		Gui, %GUI_name%:Add, Button, x950 y%h% gMB_close,  &No
+		Gui, %GUI_name%:Show,, Error - %Title%
+		Gui, %GUI_name%:+AlwaysOnTop
 		
 		if wait
 			WinWaitClose, Error - %Title%
@@ -736,33 +802,38 @@ MB(Message, Title := "Quick Spiritum", method := "message", wait := True)
 
 
 
-
-MBGUIButtonYes:
-DetectHiddenWindows Off
-Gui, MBGUI:Destroy
-WinGet windows, List
-	
-Loop %windows%
+MB_Yes()
 {
-	id := windows%A_Index%
-	WinGetTitle wt, ahk_id %id%
-	
-	if (wt != "")
-		WindowsList .= wt . "`n"
+	global 
+	DetectHiddenWindows Off
+	Gui, MB_GUI:Destroy
+	WinGet windows, List
+		
+	Loop %windows%
+	{
+		id := windows%A_Index%
+		WinGetTitle wt, ahk_id %id%
+		
+		if (wt != "")
+			WindowsList .= wt . "`n"
+	}
+
+	EmailOutlook(userEmail1,, "Quick Spiritum error", "An error has occured with quick Spiritum:`n`n" . MBMessage . "`n`nOpen windows include:`n`n" . WindowsList) ;, ScreenGrabPath)
+	return
 }
 
-EmailOutlook(userEmail1,, "Quick Spiritum error", "An error has occured with quick Spiritum:`n`n" . MBMessage . "`n`nOpen windows include:`n`n" . WindowsList) ;, ScreenGrabPath)
-return
 
 
 
-
-MBGUIClose:
-MBGUIButtonOK:
-MBGUIButtonNo:
-MBGUIGuiClose:
-Gui, MBGUI:Destroy
-return
+MB_GUIGuiClose()
+{
+	MB_close()
+}
+MB_close()
+{
+	Gui, MB_GUI:Destroy
+	return
+}
 
 
 
@@ -875,6 +946,7 @@ WriteAtBookmark(Bookmark, ToType)
 
 
 
+
 ; In word documents
 InsertCheckboxAtBookmark(Bookmark, status)
 {
@@ -901,12 +973,15 @@ InsertCheckboxAtBookmark(Bookmark, status)
 
 
 
+
 timedFunction()
 {
 	turnOffImprivata()
 	;SunriseTimerCatch()
 	return
 }
+
+
 
 
 ; !!! Work in progress
@@ -1008,7 +1083,7 @@ WinEventProc(hHook, event, ChildHwnd, idObject, idChild, eventThread, eventTime)
 		ExitApp
 	}
 */
-	return
+
 /*
 }
 
@@ -1064,6 +1139,7 @@ turnOffImprivata()
 	DetectHiddenWindows, %Setting_A_DetectHiddenWindows%
 	return
 }
+
 
 
 

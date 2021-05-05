@@ -1,16 +1,27 @@
-﻿; Lung function requests (view) library (mind out for GOTO statements with returns)
+﻿; **************************************
+; Lung function requests (view) library
+; **************************************
 
 
-; Variables in header file
+; *********
+; Variables
+; *********
 
+PFTFileList := []
+PFTStoredHWNDs := []
+
+
+
+
+; *********
+; Functions
+; *********
 
 PFTSearch(MRN)
 {
-	; Test MRNs 1268241, 0669612
-	
-	global PFTPath, PFTFileList
+	global
 	PFTFileList := []
-	FilesCount := 0
+	local FilesCount := 0
 	
 	try
 	{
@@ -59,47 +70,52 @@ PFTSearch(MRN)
 
 ShowPFTs(MRN)
 {
-	global MRNinput, PFTPath, PFTStoredHWNDs, PFTFileList
-
-	FilesCount := 0
+	global
 	StoredHWND := 0
-	StoredHWNDDec := 0 
 	PFTStoredHWNDs := []
+	local FilesCount := 0
+
+	local StoredHWNDDec := 0 
+
+	local GUI_name := "ShowPFTs_GUI" 
 
 	for index, value in PFTFileList
 	{
 		Path := PFTPath . A_LoopField		
-		Gui, PFTGUI:Add, Text, cBlue gOpenPFT hwndStoredHWND, %value%
+		Gui, %GUI_name%:Add, Text, cBlue gOpenPFT hwndStoredHWND, %value%
 		StoredHWNDDec := StoredHWND + 0
 		PFTStoredHWNDs.Push(StoredHWNDDec + 0)
 		FilesCount += 1
 	}
 	
 	yValue := 30 * FilesCount
-	Gui, PFTGUI:Add, Button, x240 y%yValue%,  &Cancel
-	Gui, PFTGUI:Show,, PFTs for MRN%MRN%
-	Gui, PFTGUI:+AlwaysOnTop
-	WinWaitClose, PFTs for MRN%MRN%§
+	Gui, %GUI_name%:Add, Button, x240 y%yValue% gShowPFTs_close,  &Cancel
+	Gui, %GUI_name%:Show,, PFTs for MRN%MRN%
+	Gui, %GUI_name%:+AlwaysOnTop
+	WinWaitClose, PFTs for MRN%MRN%
 	return True
 }
 
 
-
-
-PFTGUIClose:
-PFTGUIButtonCancel:
-PFTGUIGuiClose:
-Gui, PFTGUI:Destroy
-return
+ShowPFTs_GUIguiClose()
+{
+	ShowPFTs_close()
+}
+ShowPFTs_close()
+{
+	global
+	Gui, ShowPFTs_GUI:Destroy
+	return
+}
 
 
 
 
 OpenPFT(CtrlHwnd, GuiEvent, EventLevel, ErrLevel :="")
 {
-	global PFTPath, PFTFileList, PFTStoredHWNDs
+	global
+	local FullPath := ""
 
-	FullPath := ""
 
 	For index, value in PFTStoredHWNDs
 	{
@@ -111,7 +127,7 @@ OpenPFT(CtrlHwnd, GuiEvent, EventLevel, ErrLevel :="")
 		}
 	}
 	
-	Gui, PFTGUI:Destroy
+	Gui, ShowPFTs_GUI:Destroy
 	return True
 }
 

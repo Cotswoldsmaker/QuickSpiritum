@@ -4,7 +4,7 @@
 ; in selected program or creates a request; If you see !!!, this is a note to me 
 ; that I need to fix / improve something at this point
 
-CurrentVersionNumber := 97
+CurrentVersionNumber := 100
 
 
 #SingleInstance force 		; Run only one instance and ignore update dialogue
@@ -46,10 +46,12 @@ FileGetTime, CurrentProgramModfiedDate, % CurrentProgramPath
 FormatTime, CurrentProgramModfiedDate, % CurrentProgramModfiedDate, dd/MM/yy
 InstallINIPath := CurrentDirectory . "install.ini"
 GraphicsPath := CurrentDirectory . "Graphics\"
+TrayTipTitle := "Quick Spiritum"
 
 if Developing
 {
 	Settings.RequestsFolder := settings.MasterDirectory . "Dev\Requests\"
+	TrayTipTitle .= " DEV"
 }
 
 ; Get or store settings in file "settings.ini"
@@ -112,28 +114,69 @@ CurrentlyRunning := False
 MRNRequestTitle := "MRN Request"
 Paused := False
 Files := ""
+S := 5 ; Spacing of GUIs
 
 
 
 ; Consultant names in Private variables file
-consultantListConstant := ""		
+CurrentUser := ConvertUsername(A_UserName)
+consultantListConstant := ""
+PFT_consultantListConstant := Username1 . "|"
 doctorListConstant := ""
 
-For index, Username in DrConversion[]
+DoctorConversion()
+
+DoctorConversion()
 {
-	ClinicianType := SubStr(DrConversion[Username], 1, 1)
-	Realname := SubStr(DrConversion[Username], 2)
+	global
 	
-	if (ClinicianType = "C")
+	for index, Username in DrConversion[]
 	{
-		consultantListConstant := consultantListConstant . Realname . "|"
-		doctorListConstant := doctorListConstant . Realname . "|"
+		ClinicianType := SubStr(DrConversion[Username], 1, 1)
+		Realname := SubStr(DrConversion[Username], 2)
+		
+		if (ClinicianType = "C")
+		{
+			consultantListConstant := consultantListConstant . Realname . "|"
+			PFT_consultantListConstant := PFT_consultantListConstant . Realname . "|"
+			doctorListConstant := doctorListConstant . Realname . "|"
+		}
+		else if (ClinicianType = "D")
+		{
+			doctorListConstant := doctorListConstant . Realname . "|"
+		}
 	}
-	else if (ClinicianType = "D")
-	{
-		doctorListConstant := doctorListConstant . Realname . "|"
-	}
+
+
+
+	CurrentUserPostionInListConsultant := InStr(consultantListConstant, CurrentUser)  ; 0  if not found
+	PFT_CurrentUserPostionInListConsultant := InStr(PFT_consultantListConstant, CurrentUser)  ; 0  if not found
+	CurrentUserPostionInListDoctor := InStr(doctorListConstant, CurrentUser)  ; 0  if not found
+
+		
+	; Set consultants list
+	if (CurrentUserPostionInListConsultant == 0)
+		consultantList := consultantListConstant
+	else
+		consultantList := SubStr(consultantListConstant, 1, CurrentUserPostionInListConsultant + StrLen(CurrentUser)) . "|" . SubStr(consultantListConstant, CurrentUserPostionInListConsultant + StrLen(CurrentUser) + 1)
+	
+	; Set consultants and SAS list for PFTs
+	if (PFT_CurrentUserPostionInListConsultant == 0)
+		PFT_consultantList := PFT_consultantListConstant
+	else
+		PFT_consultantList := SubStr(PFT_consultantListConstant, 1, PFT_CurrentUserPostionInListConsultant + StrLen(CurrentUser)) . "|" . SubStr(PFT_consultantListConstant, PFT_CurrentUserPostionInListConsultant + StrLen(CurrentUser) + 1)
+			
+	; Set doctor (and PA) list
+	if (CurrentUserPostionInListDoctor == 0)
+		doctorList := doctorListConstant
+	else
+		doctorList := SubStr(doctorListConstant, 1, CurrentUserPostionInListDoctor + StrLen(CurrentUser)) . "|" . SubStr(doctorListConstant, CurrentUserPostionInListDoctor + StrLen(CurrentUser) + 1)
+	
+	return
 }
+
+
+
 
 ConvertUsername(Username)
 {
@@ -155,20 +198,14 @@ else
 
 
 
-; **************************************************************
-; Libraries (libaries with GOTO and return statements are 
-; declared later, header declared now Need to declare libraries 
-; after QS variables, as some of the above declared variables 
-; are used within the libraries. I have subsequently discovered 
-; that you can remove goto statements and use functions instead. 
-; I will sort this out at some point and get ride of header and 
-; main files
-; **************************************************************
+; *********
+; Libraries
+; *********
 
 #include %A_ScriptDir%\Library\Basic functions.ahk
-#include %A_ScriptDir%\Library\Main header.ahk
-#include %A_ScriptDir%\Library\PFT header.ahk
-#include %A_ScriptDir%\Library\Requests header.ahk
+#include %A_ScriptDir%\Library\Main.ahk
+#include %A_ScriptDir%\Library\PFT.ahk
+#include %A_ScriptDir%\Library\Requests.ahk
 #include %A_ScriptDir%\Library\TrayIcon.ahk
 #include %A_ScriptDir%\Library\InfoFlex.ahk
 #include %A_ScriptDir%\Library\Internet Explorer.ahk
@@ -183,6 +220,7 @@ else
 #include %A_ScriptDir%\Library\VBA_AHK_IPC.ahk
 #include %A_ScriptDir%\Library\QIP.ahk
 #include %A_ScriptDir%\Library\Sleep service PPV.ahk
+#include %A_ScriptDir%\Library\PIV.ahk
 
 ; !!! Might not need the below functions, I will decide at some point
 #include %A_ScriptDir%\Library\Vis2\Lib\Vis2.ahk
@@ -210,9 +248,9 @@ if !Developing
 	if fileExist(InstallINIPath) ; Designed so that an installation version of AHK can be run outside of the master directory
 	{
 		if (A_Args[1] = "update")
-			TrayTip, Quick Spiritum, % "Updating. Please wait for 'running' message before trying to use QS again..."
+			TrayTip, %TrayTipTitle%, % "Updating. Please wait for 'running' message before trying to use QS again..."
 		else
-			TrayTip, Quick Spiritum, % "Copying master Quick Spiritum program to Desktop"
+			TrayTip, %TrayTipTitle%, % "Copying master Quick Spiritum program to Desktop"
 		
 		FileCreateDir, %DesktopSubFolder%
 		FileSetAttrib, +H, %DesktopSubFolder%
@@ -232,7 +270,7 @@ if !Developing
 		FileCopyDir, % Settings.MasterDirectory . "Library", %DesktopSubFolder%\Library, 1 	
 		
 		FileCreateShortcut, %DesktopProgramPath%, %Desktop%%DesktopShortcutName%, %DesktopSubFolder%,, Quick Spiritum Shortcut, %DesktopSubFolder%\Graphics\QS logo.ico
-		TrayTip, Quick Spiritum, % "Transfer complete"
+		TrayTip, %TrayTipTitle%, % "Transfer complete"
 		ExitApp
 	}
 	
@@ -329,7 +367,7 @@ checkForUpdate()
 
 
 
-TrayTip, Quick Spiritum, Running
+TrayTip, %TrayTipTitle%, Running
 
 ; Start up the VBA to QS IPC function
 V2AMessages := new MemoryMappedFile_IPC()
@@ -357,8 +395,8 @@ HotKeys := FiFoArray("F1" , "Info Box"
 	   ,"+F5" , "Bronchoscopy Request"
 	   ,"+F6" , "Healthy Lifestyles Gloucestershire Referral"
 	   ,"+F7" , "Sleepstation Referral"
-	   ,"+F10", "Sleep Questionnaire"
-	   ,"+F11", "Send Patient Information Videos"
+	   ,"+F8", "Send Patient Information Videos"
+	   ,"+F11", "Sleep Questionnaire"
 	   ,"+F12", "Quality Improvement Program")
 
 ; Set the hotkeys
@@ -656,261 +694,43 @@ return
 
 
 
-; !!! I am going to condense all of the requests (via PDF and 
-; email) into a single function. I have already started the work
-; on the Sleepstation request
 
 PET-CTrequest:
-if !registeredUsername()
-	return
-if runningStatus()
-	return
-if !GrabMRN("PET-CT request")
-	return
-CloseProgressBar()
-PBMainString := "PET-CT request:`n"
-CreateProgressBar()
-UpdateProgressBar(5, "absolute", PBMainString . "Starting / grabbing Trakcare session...")
-
-if GetPatientDetailsTrakcare(MRN)
-{
-	CloseProgressBar()
-
-	if GetPET_CT_ExtraInfo(MRN)
-	{
-		CreateProgressBar()
-		UpdateProgressBar(60, "absolute", PBMainString . "Creating request...")
-	
-		if CreatePET_CT_request(MRN)
-		{
-			UpdateProgressBar(20,, PBMainString . "Emailing PET-CT request...")
-			
-			if (PET_CT_emailLungCancerCoordinators == 1)
-				cc_addresses := PET_CT_Email_cc
-			else
-				cc_addresses := ""
-				
-			if CitrixSession
-			{
-				MB("Current cannot send via a Citrix session. Please manually locate your request in the requests folder in the master directory and send via the NHSmail web app")
-				;NHSMailOpen()
-				;Email_NHS_Mail(PET_CT_Email, PET_CT_Email_cc, "PET-CT request", "Please find attached a PET-CT request", PET_CT_latestRequestPath)
-			}
-			else
-			{
-				if EmailOutlook(PET_CT_Email, cc_addresses, "PET-CT request", "Please find attached a PET-CT request", PET_CT_latestRequestPath)
-				{
-					UpdateProgressBar(20,, PBMainString . "Complete.`n")
-					
-					Loop, 50
-					{
-						if !WinExist(PBTitle)
-							break
-							
-						sleep 200
-					}
-				}
-			}
-		}
-	}
-}
-
-CloseProgressBar()
-runningStatus("done")
-LogUpdate("PET-CT request")
+RRCreateAndSend("PET_CT")
 return
 
 
 
 
 LungFunctionRequest:
-if !registeredUsername()
-	return
-if runningStatus()
-	return
-if !GrabMRN("Lung function request")
-	return
-CloseProgressBar()
-PBMainString := "Lung function request:`n"
-CreateProgressBar()
-
-if GetPatientDetailsTrakcare(MRN)
-{
-	CloseProgressBar()
-
-	if get_PFT_extraInfo(MRN)
-	{
-		CreateProgressBar()
-		UpdateProgressBar(60, "absolute", PBMainString . "Creating request...")
-	
-		if Create_PFT_request(MRN)
-		{
-			UpdateProgressBar(20,, PBMainString . "Emailing PET-CT request...")
-
-			if (CitrixSession == True)
-			{
-				MB("Currently cannot send via a Citrix session. Stopping automation")
-				;NHSMailOpen()
-				;Email_NHS_Mail(PFT_Email,, "PET-CT request", "Please find attached a PET-CT request", PET_CT_latestRequestPath)
-			}
-			else
-			{
-				if EmailOutlook(PFT_Email,, "Lung function test request", "Please find attached a lung function request", PFT_latestRequestPath) 
-				{
-					UpdateProgressBar(20,, PBMainString . "Complete.`n")
-					
-					Loop , 15
-					{
-						if !WinExist(PBTitle)
-							break
-							
-						sleep 200
-					}
-				}
-			}
-		}
-	}
-}
-
-CloseProgressBar()
-runningStatus("done")
-LogUpdate("Lung function request")
+RRCreateAndSend("PFT")
 return
 
 
 
 
 BronchoscopyRequest:
-if !registeredUsername()
-	return
-if runningStatus()
-	return
-if !GrabMRN("Bronchoscopy request")
-	return
-
-CloseProgressBar()
-PBMainString := "Bronchoscopy request:`n"
-CreateProgressBar()
-
-if GetPatientDetailsTrakcare(MRN)
-{
-	CloseProgressBar()
-
-	if get_bronchoscopy_extraInfo(MRN)
-	{
-		CreateProgressBar()
-		UpdateProgressBar(60, "absolute", PBMainString . "Creating bronchoscopy request...")
-
-		if Create_bronchoscopy_request(MRN)
-		{
-			UpdateProgressBar(20,, PBMainString . "Emailing bronchoscopy request...")
-
-			if (Bronch_emailCoordinators == 1)
-				cc_addresses := Bronch_Email_cc
-			else
-				cc_addresses := ""
-
-			if (CitrixSession == True)
-			{
-				MB("Currently cannot send via a Citrix session. Please manually locate your request in the requests folder in the master directory and send via the NHSmail web app")
-				;NHSMailOpen()
-				;Email_NHS_Mail(Bronch_Email, cc_addresses, "Bronchoscopy request", "Please find attached a bronchoscopy request", Bronch_latestRequestPath)
-			}
-			else
-			{
-				if EmailOutlook(Bronch_Email, cc_addresses, "Bronchoscopy request", "Please find attached a bronchoscopy request", Bronch_latestRequestPath)
-				{
-					UpdateProgressBar(20,, PBMainString . "Complete.`n")
-					
-					Loop , 15
-					{
-						if !WinExist(PBTitle)
-							break
-							
-						sleep 200
-					}
-				}
-			}
-		}
-	}
-}
-
-CloseProgressBar()
-runningStatus("done")
-LogUpdate("Bronchoscopy request")
+RRCreateAndSend("bronchoscopy")
 return
 
 
 
 
 HealthyLifestylesGloucestershireReferral:
-if !registeredUsername()
-	return
-if runningStatus()
-	return
-if !GrabMRN("HLSG referral")
-	return
-
-CloseProgressBar()
-PBMainString := "Healthy Lifestyles Gloucestershire referral:`n"
-CreateProgressBar()
-
-if GetPatientDetailsTrakcare(MRN)
-{
-	CloseProgressBar()
-
-	if get_HLSG_extraInfo(MRN)
-	{
-		CreateProgressBar()
-		UpdateProgressBar(60, "absolute", PBMainString . "Creating referral...")
-
-		if Create_HLSG_request(MRN)
-		{
-			UpdateProgressBar(20,, PBMainString . "Emailing referral...")
-
-			if (CitrixSession == True)
-			{
-				MB("Currently cannot send via a Citrix session. Please manually locate your request in the requests folder in the master directory and send via the NHSmail web app")
-				;NHSMailOpen()
-				;Email_NHS_Mail(HLSG_Email,, "Healthy Lifestyles Gloucestershire referral", "Please find attached a Healthy Lifestyles Gloucestershire referral", HLSG_latestRequestPath)
-			}
-			else
-			{
-				if EmailOutlook(HLSG_Email,, "Healthy Lifestyles Gloucestershire referral", "Please find attached a Healthy Lifestyles Gloucestershire referral", HLSG_latestRequestPath)
-				{
-					UpdateProgressBar(20,, PBMainString . "Complete.`n")
-					
-					Loop , 15
-					{
-						if !WinExist(PBTitle)
-							break
-							
-						sleep 200
-					}
-				}	
-			}
-		}
-	}
-}
-
-CloseProgressBar()
-runningStatus("done")
-LogUpdate("HLSG request")
+RRCreateAndSend("HLSG")
 return
 
 
 
-; eventually all of the above requests will look like this
+
 SleepStationReferral:
-referralRequestCreateAndSend("Sleepstation")
+RRCreateAndSend("Sleepstation")
 return
 
 
 
 
 SleepQuestionnaire:
-;msgbox, % checkifTime("3:72")
-;return
 sleepQuestionnaire(MRN1)
 return
 
@@ -918,9 +738,26 @@ return
 
 
 SendPatientInformationVideos:
+if !registeredUsername()
+	return
 if runningStatus()
 	return
-GOV_UK_Notify()
+if !GrabMRN("patient information videos")
+	return
+
+;MRN := MRN1
+		
+CloseProgressBar()
+PBMainString := "Patient information video:`n"
+CreateProgressBar()
+
+if GetPatientDetailsTrakcare(MRN)
+{
+	UpdateProgressBar(100,, PBMainString . "done")
+	CloseProgressBar()
+	GOV_UK_Notify()
+}
+CloseProgressBar()
 runningStatus("done")
 return
 
@@ -949,11 +786,11 @@ if !Paused
 		Hotkey, %Key%, %Label%, Off
 	}
 
-	TrayTip, Quick Spiritum, Paused
+	TrayTip, %TrayTipTitle%, Paused
 }
 else
 {
-	TrayTip, Quick Spiritum, restarting...
+	TrayTip, %TrayTipTitle%, restarting...
 	;Acc_UnhookWinEvent(pCallback) ; !!!
 	;SRCatchFunctionRunning := False ; !!!
 	Sleep 1000
@@ -968,23 +805,10 @@ return
 ; Pressing shift and escape closes down QS
 +ESC::
 ;Acc_UnhookWinEvent(pCallback) ; !!!
-TrayTip, Quick Spiritum, Closing down...
+TrayTip, %TrayTipTitle%, Closing down...
 Sleep 1000
 ExitApp
 return
-
-
-
-
-; **************************************************************
-; Main libraries defined here (as they have labels)
-; To be fully removed at some pint as I convert Goto statements
-; into functions
-; **************************************************************
-
-#include %A_ScriptDir%\Library\Main.ahk
-#include %A_ScriptDir%\Library\PFT.ahk
-#include %A_ScriptDir%\Library\Requests.ahk
 
 
 

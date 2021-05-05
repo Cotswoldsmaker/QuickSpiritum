@@ -183,7 +183,7 @@ Class MemoryMappedFile_IPC
 			
 			if (function != "confirmStatus" and Developing)
 			{
-				TrayTip, Quick Spiritum, % " Spiritum database call for function: " . function
+				TrayTip, %TrayTipTitle%, % " Spiritum database call for function: " . function
 			}
 			
 			returnResult := %function%(V2AMessageSplit[2])

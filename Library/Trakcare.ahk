@@ -102,10 +102,17 @@ LoginTC:
 			TC.set(,, "USERNAME", username)
 			TC.set(,, "PASSWORD", password)
 			TC.click(,, "Logon")
-			
+
 			; Check if login was successful: should be able to find LocListLocationz1 (searching for USERNAME as name returns true on the login location page)
 			if !TC.elementPresent(, "ID", "LocListLocationz1")
 			{
+				if TC.HTMLFind(, "OuterHTML", "Password Expired, Please Change your Password")
+				{
+					MB("Password reset noted. Please change password on Trakcare. Stopping automation")
+					DeleteCredentials(system)
+					return False
+				}
+				
 				MB("Loggin error. Stopping automation")
 				WinClose, % TrakcareTitle
 				DeleteCredentials(system)
