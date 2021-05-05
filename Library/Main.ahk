@@ -714,7 +714,7 @@ UpdateProgressBar(amount := 10, mode := "additive", text := "", waitForClosure :
 	}
 	
 	if waitForClosure
-	{
+	{ 
 		Loop, 50
 		{
 			if !WinExist(PBTitle)
