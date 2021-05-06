@@ -669,7 +669,7 @@ progressBar_GUIGuiClose()
 
 CloseProgressBar()
 {
-	global PBTitle, PBCounter, PBPercentage, PBText
+	global
 
 	if WinExist(PBTitle)
 	{
@@ -715,7 +715,7 @@ UpdateProgressBar(amount := 10, mode := "additive", text := "", waitForClosure :
 	
 	if waitForClosure
 	{ 
-		Loop, 50
+		Loop, 25
 		{
 			if !WinExist(PBTitle)
 				break
@@ -840,7 +840,8 @@ MB_close()
 
 ErrorHandler(err := "", Program := "", Systems := "", message := "")
 {
-	global CurrentProgramPath, CurrentVersionNumber
+	global
+	
 	
 	GlobalInputLockSet(False)
 	

@@ -20,7 +20,6 @@ RRDetails := {}
 ; PET-CT request variables
 ;PET_CT_template_path := Settings.TemplatesFolder . "PET_CT_request_template.docx"
 PET_CT_latestRequestPath := ""	
-PET_CT_details := {} ; Initialise dictionary
 PET_CT_consultantName := ""
 PET_CT_doctorName := ""
 PET_CT_previousImagingType := ""
@@ -36,7 +35,6 @@ PET_CTButtonPressed := ""
 ; Lung function test request variables
 PFT_templatePath := Settings.TemplatesFolder . "PFT_request_template.docx"
 PET_latestRequestPath := ""
-PFT_details := {} ; Initialise dictionary
 PFT_consultantName := ""
 PFT_doctorName := ""
 PFT_clinicalInformation := ""
@@ -91,7 +89,6 @@ NIVEPAP := 0
 
 ; Bronchoscopy request variables
 bronch_templatePath := Settings.TemplatesFolder . "Bronchoscopy_request_template.docx"
-bronch_details := {} ; Initialise dictionary
 bronch_latestRequestPath := ""
 bronch_procedure := ""
 bronch_location := ""
@@ -113,7 +110,6 @@ bronch_emailCoordinators := 1 	; 1 = checked, 0 = unchecked
 HLSG_templatePath := Settings.TemplatesFolder . "HLSG_request_template.docx"
 HLSG_latestRequestPath := ""
 HLSG_doctorName := ""
-HLSG_details := {}
 HLSG_ethnicity := ""
 HLSG_Comorbidities := ""
 HLSG_buttonPressed := ""
@@ -133,7 +129,6 @@ HLSG_physicalActivity := 0
 ;SleepStation
 Sleepstation_template_path := Settings.TemplatesFolder . "Sleepstation_referral_template.docx"
 SleepStation_latestRequestPath := ""
-SleepStation_details := {}
 Sleepstation_buttonPressed := ""
 
 
@@ -169,7 +164,6 @@ RRCreateAndSend(RRtypeTemp)
 	RRMessageAddSuffix()
 	local RRFunctionCR := "create_" . RRtype . "_" . RR_suffix
 	local index, element
-	local PBMainString := ""
 	
 	
 	if !registeredUsername()
@@ -281,13 +275,13 @@ RRCreatePDF()
 	local dateToday := ""
 	FormatTime, dateToday,, dd/MM/yy
 	local signatureWidth := signatureHeight * GraphicsDimensions(RRdetails.signature)
-	; !!!
-	;Loop, 5		; Allow 5 errors before failing function
-	;{
+	
+	Loop, 5		; Allow 5 errors before failing function
+	{
 		RRLatestSavePath := Settings.RequestsFolder . "\" . RRMessage . " MRN" . MRN . "_"
 
-		;try
-		;{
+		try
+		{
 			Loop
 			{
 				RRLatestSavePathTemp := RRLatestSavePath . A_Index . ".pdf"
@@ -336,7 +330,7 @@ RRCreatePDF()
 			oWord.ActiveDocument.close(False)
 			
 			return True
-		/*
+		
 		}
 		catch, err
 		{
@@ -354,7 +348,7 @@ RRCreatePDF()
 			}
 		}
 	}
-	*/
+	
 	return False
 }
 
@@ -368,7 +362,7 @@ RREmail()
 	
 	if (CitrixSession == True)
 	{
-		MB("Currently cannot send via a Citrix session. Stopping automation")
+		UpdateProgressBar(100, "absolute", PBMainString . "Currently cannot send via a Citrix session. Request / referral can be found in the Request folder (see Settings under F1)", True)
 		;NHSMailOpen()
 		;Email_NHS_Mail(%RREmail%, "", RRMessage, "Please find attached a " . RRMessage, %RRLatestRequestPath%)
 	}
@@ -376,7 +370,7 @@ RREmail()
 	{
 		if EmailOutlook(%RREmail%, ccEmail, RRMessage, "Please find attached a " . RRMessage, RRLatestSavePath)
 		{
-			UpdateProgressBar(20,, PBMainString . "Complete.`n")
+			UpdateProgressBar(100, "absolute", PBMainString . "Complete")
 			
 			Loop , 15
 			{

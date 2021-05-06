@@ -292,7 +292,7 @@ GUKN_email()
 	
 	H := 100
 	Gui, %GUI_name%:Add, Text, x10 y%yAdditive%, % "Subject:"
-	Gui, %GUI_name%:Add, Edit, x%GUIStart% y%yAdditive% W%GUIWidth% H%H%vGUKN_email_subject, % "Message from GHNHST Respiratory Department"
+	Gui, %GUI_name%:Add, Edit, x%GUIStart% y%yAdditive% W%GUIWidth% H%H% vGUKN_email_subject, % "Message from GHNHSFT Respiratory Department"
 	yAdditive += H + S
 	
 	H := 200
