@@ -49,7 +49,7 @@ QIP_main()
 		SleepStation_Email := TestEmail
 	}
 	
-	local username := ConvertUsername(A_UserName) . " (" . A_UserName . ")"
+	local username := getClinicianDetails(clinicianUsername, A_UserName, clinicianActualName) . " (" . A_UserName . ")"
 	local result
 	local title := "Quick Spiritum - Quality Improvement Project (QS-QIP)"
 	local message := username . " started on "
@@ -434,7 +434,7 @@ QIP_log_update(message)
 	if !fileExist(QIP_log_path)
 	{
 		FileAppend, Quick Spiritum QIP Log`n, % QIP_log_path
-		FileAppend, % ConvertUsername(A_UserName) . " (" . A_UserName . ")`n", % QIP_log_path
+		FileAppend, % getClinicianDetails(clinicianUsername, A_UserName, clinicianActualName) . " (" . A_UserName . ")`n", % QIP_log_path
 		sleep 200
 	}
 	

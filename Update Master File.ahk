@@ -12,6 +12,7 @@
 
 MasterQSPath := Settings.MasterDirectory . "Quick Spiritum.ahk"
 DevDirectory := Settings.MasterDirectory . "Dev\QuickSpiritum\"
+PrivateVariablesPath := Settings.MasterDirectory . "Dev\Private variables.ahk"
 DevQSPath := DevDirectory . "Quick Spiritum.ahk"
 newLine := "`r`n"
 
@@ -31,6 +32,9 @@ Gui, MBGUI:+AlwaysOnTop
 ; Copy across library updates
 FileCopy, % DevDirectory . "Library\*.*", % Settings.MasterDirectory . "Library",  1
 FileCopyDir, % DevDirectory . "Library", % Settings.MasterDirectory . "Library", 1 
+
+; Copy across the private variables file with actual variables (and not a path pointer)
+FileCopy, % PrivateVariablesPath, % Settings.MasterDirectory . "Library",  1
 
 ; Copy across signature updates
 FileCopy, % DevDirectory . "Signatures\*.*", % Settings.MasterDirectory . "Signatures",  1

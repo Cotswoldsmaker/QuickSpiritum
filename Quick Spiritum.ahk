@@ -4,9 +4,11 @@
 ; in selected program or creates a request; If you see !!!, this is a note to me 
 ; that I need to fix / improve something at this point
 
-CurrentVersionNumber := 100
+CurrentVersionNumber := 101
 
 
+#Warn useUnsetLocal			; Warn if local variable not initialised
+#Warn useUnsetGlobal		; Warn if global variable not initialised
 #SingleInstance force 		; Run only one instance and ignore update dialogue
 #NoEnv  					; Recommended for performance and compatibility with future AutoHotkey releases.
 #Persistent 				; keep running
@@ -118,59 +120,58 @@ S := 5 ; Spacing of GUIs
 
 
 
-; Consultant names in Private variables file
-CurrentUser := ConvertUsername(A_UserName)
-consultantListConstant := ""
-PFT_consultantListConstant := Username1 . "|"
-doctorListConstant := ""
+; clinicianDetails in private variables file
+currentUser := getClinicianDetails(clinicianUsername, A_UserName, clinicianActualName)
+consultantList := ""
+PFT_consultantList := Username1 . "|"
+doctorList := "" 
 
-DoctorConversion()
+createClinicianLists()
 
-DoctorConversion()
+createClinicianLists()
 {
 	global
+	local clinicianType := ""
+	local realname := ""
+	local currentUserPostionInListConsultant := ""
+	local PFT_currentUserPostionInListConsultant := ""
+	local currentUserPostionInListDoctor := ""
 	
-	for index, Username in DrConversion[]
+	Loop, % clinicianDetails.MaxIndex()
 	{
-		ClinicianType := SubStr(DrConversion[Username], 1, 1)
-		Realname := SubStr(DrConversion[Username], 2)
+		clinicianType := clinicianDetails[A_index][clinicianPosition]
+		realname := clinicianDetails[A_index][clinicianActualName]
 		
-		if (ClinicianType = "C")
+		if (clinicianType = "consultant")
 		{
-			consultantListConstant := consultantListConstant . Realname . "|"
-			PFT_consultantListConstant := PFT_consultantListConstant . Realname . "|"
-			doctorListConstant := doctorListConstant . Realname . "|"
+			consultantList .= realname . "|"
+			PFT_consultantList .= realname . "|"
+			doctorList .= realname . "|"
 		}
-		else if (ClinicianType = "D")
+		else
 		{
-			doctorListConstant := doctorListConstant . Realname . "|"
+			doctorList .= realname . "|"
 		}
 	}
 
 
-
-	CurrentUserPostionInListConsultant := InStr(consultantListConstant, CurrentUser)  ; 0  if not found
-	PFT_CurrentUserPostionInListConsultant := InStr(PFT_consultantListConstant, CurrentUser)  ; 0  if not found
-	CurrentUserPostionInListDoctor := InStr(doctorListConstant, CurrentUser)  ; 0  if not found
+	; 0  if not found
+	currentUserPostionInListConsultant := InStr(consultantList, currentUser)
+	PFT_currentUserPostionInListConsultant := InStr(PFT_consultantList, currentUser)
+	currentUserPostionInListDoctor := InStr(doctorList, currentUser)
 
 		
-	; Set consultants list
-	if (CurrentUserPostionInListConsultant == 0)
-		consultantList := consultantListConstant
-	else
-		consultantList := SubStr(consultantListConstant, 1, CurrentUserPostionInListConsultant + StrLen(CurrentUser)) . "|" . SubStr(consultantListConstant, CurrentUserPostionInListConsultant + StrLen(CurrentUser) + 1)
+	; Set consultant's list
+	if (CurrentUserPostionInListConsultant != 0)
+		consultantList := SubStr(consultantList, 1, CurrentUserPostionInListConsultant + StrLen(CurrentUser)) . "|" . SubStr(consultantList, CurrentUserPostionInListConsultant + StrLen(CurrentUser) + 1)
 	
 	; Set consultants and SAS list for PFTs
-	if (PFT_CurrentUserPostionInListConsultant == 0)
-		PFT_consultantList := PFT_consultantListConstant
-	else
-		PFT_consultantList := SubStr(PFT_consultantListConstant, 1, PFT_CurrentUserPostionInListConsultant + StrLen(CurrentUser)) . "|" . SubStr(PFT_consultantListConstant, PFT_CurrentUserPostionInListConsultant + StrLen(CurrentUser) + 1)
+	if (PFT_CurrentUserPostionInListConsultant != 0)
+		PFT_consultantList := SubStr(PFT_consultantList, 1, PFT_CurrentUserPostionInListConsultant + StrLen(CurrentUser)) . "|" . SubStr(PFT_consultantList, PFT_CurrentUserPostionInListConsultant + StrLen(CurrentUser) + 1)
 			
 	; Set doctor (and PA) list
-	if (CurrentUserPostionInListDoctor == 0)
-		doctorList := doctorListConstant
-	else
-		doctorList := SubStr(doctorListConstant, 1, CurrentUserPostionInListDoctor + StrLen(CurrentUser)) . "|" . SubStr(doctorListConstant, CurrentUserPostionInListDoctor + StrLen(CurrentUser) + 1)
+	if (CurrentUserPostionInListDoctor != 0)
+		doctorList := SubStr(doctorList, 1, CurrentUserPostionInListDoctor + StrLen(CurrentUser)) . "|" . SubStr(doctorList, CurrentUserPostionInListDoctor + StrLen(CurrentUser) + 1)
 	
 	return
 }
@@ -178,15 +179,23 @@ DoctorConversion()
 
 
 
-ConvertUsername(Username)
+getClinicianDetails(searchBy, searchValue, returnValue)
 {
 	global
 	
-	if (DrConversion[Username] == "")
-		return "error finding name"
-	else
-		return SubStr(DrConversion[Username], 2)
+
+	Loop, % clinicianDetails.MaxIndex()
+	{
+		if (clinicianDetails[A_index][searchBy] == searchValue)
+		{
+			return clinicianDetails[A_index][returnValue]
+		}
+	}
+	
+	return False
 }
+
+
 
 
 ; Check if running on a Citrix machine
@@ -221,10 +230,8 @@ else
 #include %A_ScriptDir%\Library\QIP.ahk
 #include %A_ScriptDir%\Library\Sleep service PPV.ahk
 #include %A_ScriptDir%\Library\PIV.ahk
-
-; !!! Might not need the below functions, I will decide at some point
-#include %A_ScriptDir%\Library\Vis2\Lib\Vis2.ahk
-#include %A_ScriptDir%\Library\Vis2\Lib\Gdip_All.ahk
+#include %A_ScriptDir%\Library\Vis2.ahk
+#include %A_ScriptDir%\Library\Gdip_All.ahk
 
 
 ; Read through files in the startup folder
@@ -1194,7 +1201,7 @@ LogUpdate(message)
 		sleep 200
 	}
 	
-	FileAppend, % Today . ": " . ConvertUsername(A_UserName) . " (" . A_UserName . ") - " . message . "`n", % LogPath
+	FileAppend, % Today . ": " . getClinicianDetails(clinicianUsername, A_UserName, clinicianActualName) . " (" . A_UserName . ") - " . message . "`n", % LogPath
 	return True
 }
 
@@ -1203,7 +1210,10 @@ LogUpdate(message)
 
 registeredUsername()
 {
-	if (ConvertUsername(A_UserName) == "error finding name")
+	global 
+	
+
+	if (getClinicianDetails(clinicianUsername, A_UserName, clinicianActualName) == False)
 	{
 		msgBox, % "You are not registered to use the request/referrals functionality, please contact the superuser to rectify."
 		return False

@@ -6,6 +6,7 @@
 ; Variables
 ; ***********
 
+InfoFlexEXE := "C:\Program Files (x86)\CIMS\InfoFlex5\Progs\InfoFlex5.exe"
 InfoFlexLogonMessage := "InfoFlex Logon Message"
 InfoFlexLoginTitle := "InfoFlex Login"
 InfoFlexTitle := "InfoFlex v5 Data Entry"
@@ -23,12 +24,12 @@ InfoFlexUnlockTitle := "Unlock InfoFlex v5"
 
 SelectDataView(View)
 {
+	global
+	local text := ""
+	local ScrollTotal := 10
+	
 	SetTitleMatchMode, 1
 	
-	global InfoFlexTitle
-
-	text := ""
-	ScrollTotal := 10
 	
 	; !!! Perhaps allowing a no fail here is lazy. Could perhaps do with improving
 	if !GraphicWait("InfoFlexDataView", 10000,, 30, "NoFail") ; !!! Need higher variance perhaps, has failed here
@@ -47,7 +48,7 @@ SelectDataView(View)
 		ControlGetPos, xctrl, yctrl,,, Edit1, %InfoFlexTitle%
 		MouseMove, xctrl + 5, yctrl + 5
 		sleep 200
-		ControlClick, Edit1, %InfoFlexTitle%
+		ControlClick, Edit1, % InfoFlexTitle
 		
 		; Rather complicated way of handling dialogue boxes that have diff named buttons
 		ControlClick, Edit1, %InfoFlexTitle%, ,WheelUp
@@ -66,12 +67,12 @@ SelectDataView(View)
 		
 		Loop %ScrollTotal%
 		{
-			ControlClick, Edit1, %InfoFlexTitle%, ,WheelUp
+			ControlClick, Edit1, % InfoFlexTitle,,WheelUp
 		}
 
 		Loop %ScrollTotal%
 		{
-			  ControlGetText, text, Edit1, %InfoFlexTitle%
+			  ControlGetText, text, Edit1, % InfoFlexTitle
 			  
 			  if (text = View)
 			  {      
@@ -79,7 +80,7 @@ SelectDataView(View)
 					return True
 			  }
 
-			  ControlClick, Edit1, %InfoFlexTitle%, ,WheelDown
+			  ControlClick, Edit1, % InfoFlexTitle,, WheelDown
 		}
 	}
 
@@ -93,23 +94,22 @@ SelectDataView(View)
 ; Note: InfoFlex needs to move the mouse over items (except buttons) to interact consistently with them
 InfoFlexSearch(MRN)
 {
+	global
+	local system := "InfoFlex"
+	local PatientFound := False
+	FormatTime, Today, ,dd/MM/yyyy
+	
 	SetTitleMatchMode, 1
 	SetKeyDelay, 10, 10
 
-	global InfoFlexTitle, InfoFlexLoginTitle, InfoFlexLogonMessage, InfoFlexSelectModule, InfoFlexDataEntry, InfoFlexSubjectSearch, username, password
-	global InfoFlexUnlockTitle, Settings, IF_ExitBeforeSelectAndZoom
-	
-	system := "InfoFlex"
-	PatientFound := False
-	FormatTime, Today, ,dd/MM/yyyy
-	
+
 	try
 	{
 		; Handle if InfoFlex is at Select Module dialogue
 		if WinExist(InfoFlexSelectModule)
 		{
 			keyPress("SSCommandWndClass1", "enter", InfoFlexSelectModule)
-			WinWait, %InfoFlexTitle%
+			WinWait, % InfoFlexTitle
 		}
 		
 		; Start InfoFlex if not already running or start to input credentials on Login screen
@@ -124,21 +124,24 @@ InfoFlexSearch(MRN)
 			{
 				Try
 				{
-					Run, "C:\Program Files (x86)\CIMS\InfoFlex5\Progs\InfoFlex5.exe"
+					SubtitleMessage("Starting up InfoFlex...")
+					Run, % InfoFlexEXE
 				}
 				Catch
 				{
+					SubtitleClose()
 					MB("InfoFlex did not start correctly. Stopping automation.",, "DevInform")
 					return False
 				}
 
-				WinWait, %InfoFlexLoginTitle%
+				WinWait, % InfoFlexLoginTitle
+				SubtitleClose()
 			}
 
 			WinActivate, %InfoFlexLoginTitle%
 			GlobalInputLockSet(True)
-			ControlSetText, ThunderRT6TextBox2, %username%, %InfoFlexLoginTitle%
-			ControlSetText, ThunderRT6TextBox1, %password%, %InfoFlexLoginTitle%
+			ControlSetText, ThunderRT6TextBox2, % username, % InfoFlexLoginTitle
+			ControlSetText, ThunderRT6TextBox1, % password, % InfoFlexLoginTitle
 			Send, {enter}
 			GlobalInputLockSet(False)
 
@@ -149,14 +152,14 @@ InfoFlexSearch(MRN)
 				{
 					try
 					{
-						ControlClick, OK, %InfoFlexLogonMessage%
+						ControlClick, OK, % InfoFlexLogonMessage
 						MB("Credentials error. Stopping automation. Please try again")
 						DeleteCredentials(system)
 						return False
 					}
 					catch
 					{
-						ControlClick, &No, %InfoFlexLogonMessage%
+						ControlClick, &No, % InfoFlexLogonMessage
 					}
 				}
 			
@@ -195,7 +198,7 @@ InfoFlexSearch(MRN)
 		}
 		else
 		{
-			WinActivate, %InfoFlexTitle%
+			WinActivate, % InfoFlexTitle
 			
 			; InfoFlex is locked
 			if WinExist(InfoFlexUnlockTitle)
@@ -204,13 +207,13 @@ InfoFlexSearch(MRN)
 				{
 					return False
 				}
-				ControlSetText, ThunderRT6TextBox2, %password%, %InfoFlexUnlockTitle%	
+				ControlSetText, ThunderRT6TextBox2, % password, % InfoFlexUnlockTitle	
 				PostClick(5, 5, "Unlock", InfoFlexUnlockTitle)
 			}
 			
 			if WinExist(InfoFlexSubjectSearch)
 			{
-				WinClose, %InfoFlexSubjectSearch%
+				WinClose, % InfoFlexSubjectSearch
 				sleep 200
 			}
 			
@@ -245,14 +248,14 @@ InfoFlexSearch(MRN)
 		}
 
 		;  Search for patient
-		WinWait, %InfoFlexSubjectSearch%
-		WinActivate, %InfoFlexSubjectSearch%
+		WinWait, % InfoFlexSubjectSearch
+		WinActivate, % InfoFlexSubjectSearch
 
-		ControlSetText, ThunderRT6TextBox4, %MRN%, %InfoFlexSubjectSearch%
-		ControlSetText, ThunderRT6TextBox5,, %InfoFlexSubjectSearch%
-		ControlSetText, ThunderRT6TextBox6,, %InfoFlexSubjectSearch%
-		ControlSetText, ThunderRT6TextBox3,, %InfoFlexSubjectSearch%
-		ControlSetText, ThunderRT6TextBox7,, %InfoFlexSubjectSearch%
+		ControlSetText, ThunderRT6TextBox4, % MRN, % InfoFlexSubjectSearch
+		ControlSetText, ThunderRT6TextBox5,, % InfoFlexSubjectSearch
+		ControlSetText, ThunderRT6TextBox6,, % InfoFlexSubjectSearch
+		ControlSetText, ThunderRT6TextBox3,, % InfoFlexSubjectSearch
+		ControlSetText, ThunderRT6TextBox7,, % InfoFlexSubjectSearch
 		keyPressWindow("enter", InfoFlexSubjectSearch) ; ControlClick cannot do this step
 
 
@@ -275,7 +278,7 @@ InfoFlexSearch(MRN)
 			return False
 		}
 		
-		WinActivate, %InfoFlexTitle%
+		WinActivate, % InfoFlexTitle
 		
 		if IF_ExitBeforeSelectAndZoom
 			return True
@@ -311,7 +314,7 @@ InfoFlexSearch(MRN)
 	try
 	{
 		; Click on 'Patient Demographics' tree node
-		ControlGetPos, xctrl, yctrl,,, SSTreeWndClass3, %InfoFlexTitle%
+		ControlGetPos, xctrl, yctrl,,, SSTreeWndClass3, % InfoFlexTitle
 		MouseMove, xctrl + 29, yctrl + 5
 		MouseClick
 		keyPress("SSTreeWndClass3", "Down 40", InfoFlexTitle)
@@ -342,8 +345,8 @@ InfoFlexSearch(MRN)
 			if WinExist(InfoFlexDataEntry)
 			{
 				; Press cancel button
-				ControlClick, Button2, %InfoFlexDataEntry%
-				ControlClick, SSCommandWndClass3, %InfoFlexDataEntry% ; !!! review what this is
+				ControlClick, Button2, % InfoFlexDataEntry
+				ControlClick, SSCommandWndClass3, % InfoFlexDataEntry ; !!! review what this is
 				break
 			}
 
@@ -360,15 +363,14 @@ InfoFlexSearch(MRN)
 ; Only opens InfoFlex and searches for patient. Does not open letters
 InfoFlexStartupAndSearch(MRN)
 {
+	global
+	local system := "InfoFlex"
+	local PatientFound := False
+	FormatTime, Today, ,dd/MM/yyyy
+	
 	SetTitleMatchMode, 1
 	SetKeyDelay, 10, 10
 
-	Global 	InfoFlexTitle, InfoFlexLoginTitle, InfoFlexLogonMessage, InfoFlexSelectModule, InfoFlexDataEntry, InfoFlexSubjectSearch, username, password, PBMainString
-
-	system := "InfoFlex"
-	PatientFound := False
-	Blank := ""
-	FormatTime, Today, ,dd/MM/yyyy
 
 	try
 	{
@@ -376,7 +378,7 @@ InfoFlexStartupAndSearch(MRN)
 		if WinExist(InfoFlexSelectModule)
 		{
 			keyPress("SSCommandWndClass1", "enter", InfoFlexSelectModule)
-			WinWait, %InfoFlexTitle%
+			WinWait, % InfoFlexTitle
 		}
 
 		; Start InfoFlex if not already running or start to input credentials on Login screen
@@ -394,7 +396,7 @@ InfoFlexStartupAndSearch(MRN)
 				; Start InfoFlex
 				Try
 				{
-					Run, "C:\Program Files (x86)\CIMS\InfoFlex5\Progs\InfoFlex5.exe"
+					Run, % InfoFlexEXE
 				}
 				Catch err
 				{
@@ -408,10 +410,10 @@ InfoFlexStartupAndSearch(MRN)
 		
 			UpdateProgressBar(10,, PBMainString . "Entering credentials...")
 		
-			WinActivate, %InfoFlexLoginTitle%
+			WinActivate, % InfoFlexLoginTitle
 			GlobalInputLockSet(True)
-			ControlSetText, ThunderRT6TextBox2, %username%, %InfoFlexLoginTitle%
-			ControlSetText, ThunderRT6TextBox1, %password%, %InfoFlexLoginTitle%
+			ControlSetText, ThunderRT6TextBox2, % username, % InfoFlexLoginTitle
+			ControlSetText, ThunderRT6TextBox1, % password, % InfoFlexLoginTitle
 			Send, {enter}
 			GlobalInputLockSet(False)
 
@@ -442,7 +444,7 @@ InfoFlexStartupAndSearch(MRN)
 			UpdateProgressBar(10,, PBMainString . "Searching for patient...")
 
 			; Open patient search		
-			WinActivate, %InfoFlexTitle%
+			WinActivate, % InfoFlexTitle
 			GraphicWait("InfoFlexFindPatient", 600000,, 10)
 
 			Loop 10
@@ -462,7 +464,7 @@ InfoFlexStartupAndSearch(MRN)
 		{
 			if WinExist(InfoFlexSubjectSearch)
 			{
-				WinClose, %InfoFlexSubjectSearch%
+				WinClose, % InfoFlexSubjectSearch
 				sleep 200
 			}
 
@@ -477,7 +479,7 @@ InfoFlexStartupAndSearch(MRN)
 			}
 			
 			; Open patient search
-			WinActivate, %InfoFlexTitle%
+			WinActivate, % InfoFlexTitle
 			GraphicWait("InfoFlexFindPatient", 600000,, 5)
 			GraphicClick("InfoFlexFindPatient", 0, 0,, 5)
 
@@ -500,12 +502,12 @@ InfoFlexStartupAndSearch(MRN)
 		}
 
 		;  Search for patient
-		WinWait, %InfoFlexSubjectSearch%
-		WinActivate, %InfoFlexSubjectSearch%
-		ControlSetText, ThunderRT6TextBox4, %Blank%, %InfoFlexSubjectSearch%
-		ControlSetText, ThunderRT6TextBox4, %MRN%, %InfoFlexSubjectSearch%
-		ControlSetText, ThunderRT6TextBox6, %Blank%, %InfoFlexSubjectSearch%
-		ControlSetText, ThunderRT6TextBox3, %Blank%, %InfoFlexSubjectSearch%
+		WinWait, % InfoFlexSubjectSearch
+		WinActivate, % InfoFlexSubjectSearch
+		ControlSetText, ThunderRT6TextBox4,, % InfoFlexSubjectSearch
+		ControlSetText, ThunderRT6TextBox4, % MRN, % InfoFlexSubjectSearch
+		ControlSetText, ThunderRT6TextBox6,, % InfoFlexSubjectSearch
+		ControlSetText, ThunderRT6TextBox3,, % InfoFlexSubjectSearch
 		keyPressWindow("enter", InfoFlexSubjectSearch) ; ControlClick cannot do this step
 
 
@@ -531,7 +533,7 @@ InfoFlexStartupAndSearch(MRN)
 		UpdateProgressBar(10,, PBMainString . "Retrieving patient and GP demographics...")
 
 		; Click on 'Patient Demographics' tree node
-		ControlGetPos, xctrl, yctrl,,, SSTreeWndClass3, %InfoFlexTitle%
+		ControlGetPos, xctrl, yctrl,,, SSTreeWndClass3, % InfoFlexTitle
 		MouseMove, xctrl + 29, yctrl + 5
 		MouseClick 
 
@@ -566,7 +568,7 @@ InfoFlexStartupAndSearch(MRN)
 ; No longer used at Gloucester. Now using Trakcare to get patient demographics
 GetPatientDetailsInfoFlex(MRN)
 {
-	global PatientDetails, InfoFlexTitle
+	global
 
 	try
 	{

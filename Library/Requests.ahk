@@ -140,8 +140,8 @@ if emailTest
 	PET_CT_Email := TestEmail
 	PET_CT_Email_cc := ""
 	PFT_Email := TestEmail
-	bronch_Email := TestEmail
-	bronch_Email_cc := ""
+	bronchoscopy_Email := TestEmail
+	bronchoscopy_Email_cc := ""
 	HLSG_Email := TestEmail
 	SleepStation_Email := TestEmail
 }
@@ -1602,7 +1602,7 @@ HLSG_OK()
 	RRDetails.ethnicity := HLSG_ethnicity
 	RRDetails.doctorName := HLSG_doctorName
 	RRDetails.signature := CurrentDirectory . "Signatures\" .  HLSG_doctorName . ".jpg"
-	RRDetails.referrerDetails := "Dr " . RRDetails.doctorName . ", " . DeptAddress
+	RRDetails.referrerDetails := getClinicianDetails(clinicianActualName, RRDetails.doctorName, clinicianTitle) . " " . RRDetails.doctorName . ", " . DeptAddress
 	
 	if (PatientDetails.gender = "Male")
 	{
@@ -1696,7 +1696,7 @@ sleepstation_GUI()
 		
 	H := 30
 	Gui, %GUI_name%:Add, Text, x10 y%yAdditive%, Doctor email:
-	Gui, %GUI_name%:Add, Edit, x%GUIStart% y%yAdditive% W%GUIWidth% vSleepstationDoctorEmail, % "@nhs.net"
+	Gui, %GUI_name%:Add, Edit, x%GUIStart% y%yAdditive% W%GUIWidth% vSleepstationDoctorEmail, % getClinicianDetails(clinicianUsername, A_UserName, clinicianEmail)
 	yAdditive += H + S
 		
 	H := 70
@@ -1729,7 +1729,7 @@ sleepstation_OK()
 	if (SleepstationDoctorName == "")
 		errorString := errorString . "- No requesting doctor was chosen.`n"
 		
-	if (SleepstationDoctorEmail == "" or SleepstationDoctorEmail == "@nhs.net" or !instr(SleepstationDoctorEmail, "@"))
+	if (SleepstationDoctorEmail == "" or !instr(SleepstationDoctorEmail, "@"))
 		errorString := errorString . "- No requesting doctor email provided.`n"
 		
 	if (SleepstationClinicalDetails = "" or SleepstationClinicalDetails == "Insomnia ")

@@ -18,9 +18,9 @@ PACSMRNBox := "Edit4"
 
 PACSSearch(MRN)
 {
-	Global
-	system:= "PACS"
-	LoginPass := False
+	global
+	local system:= "PACS"
+	local LoginPass := False
 	
 	SetKeyDelay, 5, 5
 	
@@ -40,26 +40,29 @@ PACSSearch(MRN)
 					try
 					{
 						SubtitleMessage("Starting up PACS...")
-						run, %PACSEXE%
+						run, % PACSEXE
 					}
 					catch
 					{
 						SubtitleClose()
+						WinClose, % PACSTitle
 						MB("Issue with starting PACS. Stopping automation",, "DevInform")
 						return False
 					}
-					WinWait, %PACSTitle%
+					
+					WinWait, % PACSTitle
+					SubtitleClose()
 				}
 
-				SubtitleClose()
+
 				if !GraphicWait("PACSTriangle", 60000,,, False)
 				{
 					MB("It appears PACS did not start up correctly! Please try again.")
 					return False
 				}
 				GlobalInputLockSet(True)
-				ControlSetText, Edit1, %username%, %PACSTitle%
-				ControlSetText, Edit2, %password%, %PACSTitle%
+				ControlSetText, Edit1, % username, % PACSTitle
+				ControlSetText, Edit2, % password, % PACSTitle
 				PostClick(5, 5, "Button1", PACSTitle)
 				sleep 1000 ; need otherwise previous login error might be read off screen
 				GlobalInputLockSet(False)
@@ -71,7 +74,6 @@ PACSSearch(MRN)
 						sleep 200
 						DeleteCredentials(system)
 						PostClick(5, 5, "&OK", PACSTitle)
-						SubtitleClose()
 						MB("Password update noted. Stopping PACS automation. Please update PACS password and try QS automation again")
 						return False
 					}
@@ -93,7 +95,6 @@ PACSSearch(MRN)
 
 				if (LoginPass == False)
 				{
-					SubtitleClose()
 					MB("Credentials error. Stopping automation. Please try again")
 					DeleteCredentials(system)
 					return False
@@ -128,19 +129,21 @@ PACSSearch(MRN)
 			}
 			
 			GlobalInputLockSet(True)
-			WinActivate, %PACSTitle%
+			WinActivate, % PACSTitle
 			GraphicClick("PACSMRN", 5, 25)
 			sleep 200
-			ControlSetText, %PACSMRNBox%, %MRN%, %PACSTitle%
+			ControlSetText, % PACSMRNBox, % MRN, % PACSTitle
 			PostClick(5, 5, "search", PACSTitle)
 			GlobalInputLockSet(False)
 
 			GraphicWait("PACSPlus", 2000,,, False)
 			GraphicClick("PACSPlus", 2, 2,,, False)
+			
+			return True
 		}
 		catch, err
 		{
-			WinClose, %PACSTitle%
+			WinClose, % PACSTitle
 			
 			if (A_index >= 5)
 			{
@@ -155,7 +158,7 @@ PACSSearch(MRN)
 		}
 	}
 	
-	return True
+	return False
 }
 
 

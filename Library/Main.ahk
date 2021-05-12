@@ -844,6 +844,7 @@ ErrorHandler(err := "", Program := "", Systems := "", message := "")
 	
 	
 	GlobalInputLockSet(False)
+	SubtitleClose()
 	
 	if (err = "")
 	{
@@ -1144,10 +1145,9 @@ turnOffImprivata()
 
 
 
-; !!! Need to condense this and potentially remove the OCR part of this
 SubtitleMessage(message := "")
 {
-	global vis2Obj
+	global
 	
 	vis2Obj := IsObject(obj) ? obj : {}
 	vis2Obj.EXITCODE := 0 ; 0 = in progress, -1 = escape, 1 = success
